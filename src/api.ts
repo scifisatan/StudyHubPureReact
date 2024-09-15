@@ -8,7 +8,7 @@ const myHeaders = {
 
 
 const api = axios.create({
-  baseURL: "https://api.sthaarun.com.np",
+  baseURL: import.meta.env.VITE_API_URL,
   headers: myHeaders,
 });
 
