@@ -2,16 +2,31 @@ import { useState } from "react";
 import { MarkdownRenderer } from "../components/markdown-renderer";
 import { PrivateRoute } from "./private";
 import { Dropzone } from "../components/dropzone";
+import { getPDFSummary } from "../api";
+import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 
 function FilesPage() {
   const [markdownContent, setMarkdownContent] = useState(
     "Your notes will appear here",
   );
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleFileChange = (file: File) => {
+  const handleFileChange = async (file: File) => {
     if (file) {
-      setMarkdownContent("Kati ramro notes wow");
       console.log(file)
+    }
+
+    setIsLoading(true);
+    try {
+
+      const data = await getPDFSummary(file);
+      setMarkdownContent(data);
+      
+    } catch (error) {
+      toast.error("Failed to fetch summary. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -20,7 +35,13 @@ function FilesPage() {
       <div>
         <Dropzone onFileChange={handleFileChange} />
       </div>
-      <MarkdownRenderer content={markdownContent} />
+      {isLoading ? (
+        <div className="flex items-center justify-center py-8">
+          <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+        </div>
+      ) : (
+        <MarkdownRenderer content={markdownContent} />
+      )}
     </div>
   );
 }

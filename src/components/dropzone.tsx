@@ -16,7 +16,7 @@ export function Dropzone(props) {
     onDrop: (files) =>{
       let file = files[0]
       if(file.type === 'application/pdf'){
-        props.onFileChange(files);
+        props.onFileChange(file);
         toast.success("File has been uploaded successfully")
       }
     }
