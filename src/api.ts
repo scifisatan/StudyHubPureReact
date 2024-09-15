@@ -5,10 +5,13 @@ import { toast } from "sonner";
 const myHeaders = {
   "Content-Type": "application/json",
 };
-
+const baseURL = import.meta.env.VITE_API_URL;
+if (!baseURL) {
+  throw new Error('VITE_API_URL environment variable is not defined');
+}
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL: baseURL,
   headers: myHeaders,
 });
 

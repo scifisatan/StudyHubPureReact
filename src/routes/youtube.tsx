@@ -1,8 +1,9 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { toast } from "sonner";
 import { getYoutubeSummary } from "../api";
 import { MarkdownRenderer } from "../components/markdown-renderer";
 import { PrivateRoute } from "./private";
+import { Loader2 } from "lucide-react";
 
 function YouTubeEmbed({ videoId }: { videoId: string }) {
   return (
@@ -20,8 +21,9 @@ function YoutubePage() {
   const [videoId, setVideoId] = useState("");
   const [isValidLink, setIsValidLink] = useState(false);
   const [markdownContent, setMarkdownContent] = useState(
-    "Your notes will appear here",
+    "Your notes will appear here"
   );
+  const [isLoading, setIsLoading] = useState(false);
 
   const extractVideoId = (url: string) => {
     const regExp =
@@ -30,17 +32,18 @@ function YoutubePage() {
     return match ? match[1] : null;
   };
 
-  const handleYoutubeLinkChange = (e: React.FormEvent) => {
-    setYoutubeLink((e.target as HTMLInputElement).value);
-    const extractedVideoId = extractVideoId(
-      (e.target as HTMLInputElement).value,
-    );
+  const handleYoutubeLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setYoutubeLink(e.target.value);
+    const extractedVideoId = extractVideoId(e.target.value);
     if (extractedVideoId) {
       setVideoId(extractedVideoId);
       setIsValidLink(true);
       toast.success("Video ID extracted successfully!");
+    } else {
+      setIsValidLink(false);
     }
   };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -49,9 +52,15 @@ function YoutubePage() {
       return;
     }
 
-    getYoutubeSummary(youtubeLink).then((data) => {
+    setIsLoading(true);
+    try {
+      const data = await getYoutubeSummary(youtubeLink);
       setMarkdownContent(data);
-    });
+    } catch (error) {
+      toast.error("Failed to fetch summary. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -63,12 +72,18 @@ function YoutubePage() {
           onChange={handleYoutubeLinkChange}
           placeholder="Enter YouTube link"
           className="flex-grow rounded border bg-background px-4 py-2 text-foreground"
+          disabled={isLoading}
         />
         <button
           type="submit"
-          className="rounded bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600"
+          className="rounded bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600 disabled:bg-blue-300"
+          disabled={!isValidLink || isLoading}
         >
-          Enter
+          {isLoading ? (
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          ) : (
+            "Enter"
+          )}
         </button>
       </form>
       {isValidLink && (
@@ -76,7 +91,13 @@ function YoutubePage() {
           <YouTubeEmbed videoId={videoId} />
         </div>
       )}
-      <MarkdownRenderer content={markdownContent} />
+      {isLoading ? (
+        <div className="flex items-center justify-center py-8">
+          <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+        </div>
+      ) : (
+        <MarkdownRenderer content={markdownContent} />
+      )}
     </div>
   );
 }
