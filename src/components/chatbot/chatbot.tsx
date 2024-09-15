@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./khwopaChatStyles.css";
-import { Send, Phone } from 'lucide-react';
+import { Send } from 'lucide-react';
 import { X } from 'lucide-react';
 import { v4 as uuidv4 } from "uuid";
 
@@ -87,18 +87,14 @@ const addBotResponseToChatBox = (response: { text: string }[]) => {
     }
   };
 
-  const sendAffirm = () => {
-    clearMessageForms();
-    const userMessage = "/affirm";
-    requestServerForAnswer(userMessage);
-  };
 
-  const clearMessageForms = () => {
-    const messageForms = document.getElementsByClassName("messageForm");
-    for (let i = 0; i < messageForms.length; i++) {
-      messageForms[i].innerHTML = "";
-    }
-  };
+
+  // const clearMessageForms = () => {
+  //   const messageForms = document.getElementsByClassName("messageForm");
+  //   for (let i = 0; i < messageForms.length; i++) {
+  //     messageForms[i].innerHTML = "";
+  //   }
+  // };
 
 
   return (
