@@ -16,6 +16,7 @@ function YouTubeEmbed({ videoId }: { videoId: string }) {
 function YoutubePage() {
   const [youtubeLink, setYoutubeLink] = useState("");
   const [videoId, setVideoId] = useState("");
+  const [isValidLink, setIsValidLink] = useState(false);
   const [markdownContent, setMarkdownContent] = useState(
     "Your notes will appear here",
   );
@@ -27,17 +28,24 @@ function YoutubePage() {
     return match ? match[1] : null;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const extractedVideoId = extractVideoId(youtubeLink);
+  const handleYoutubeLinkChange = (e: React.FormEvent) => {
+    setYoutubeLink((e.target as HTMLInputElement).value);
+    const extractedVideoId = extractVideoId((e.target as HTMLInputElement).value);
     if (extractedVideoId) {
       setVideoId(extractedVideoId);
+      setIsValidLink(true);
       toast.success("Video ID extracted successfully!");
-      setMarkdownContent(`like share and subscribe guys`);
-    } else {
-      toast.error("Provided Youtube Link is not valid.")
-    }
+     
+    } 
   };
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setMarkdownContent(`like share and subscribe guys`);
+    if (!videoId) {
+      toast.error("Invalid YouTube link");
+      return;
+    }
+  }
 
   return (
     <div className="space-y-6">
@@ -45,7 +53,7 @@ function YoutubePage() {
         <input
           type="text"
           value={youtubeLink}
-          onChange={(e) => setYoutubeLink(e.target.value)}
+          onChange={handleYoutubeLinkChange}
           placeholder="Enter YouTube link"
           className="flex-grow rounded border px-4 py-2 bg-background text-foreground"
         />
@@ -56,7 +64,7 @@ function YoutubePage() {
           Enter
         </button>
       </form>
-      {videoId && (
+      {isValidLink && (
         <div className="mx-auto mt-4 max-w-md py-4">
           <YouTubeEmbed videoId={videoId} />
         </div>
