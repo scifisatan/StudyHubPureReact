@@ -77,7 +77,7 @@ export const HomePageConfig = {
     }
   ],
   "footer": {
-    "text": "© 2023 StudyHub. All rights reserved",
+    "text": "© 2024 StudyHub. All rights reserved",
     "links": [
       {
         "name": "Privacy Policy",
