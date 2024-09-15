@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useEffect, useState } from "react";
 import {
   Link,
   NavLink,
@@ -8,14 +8,7 @@ import {
   useMatch,
 } from "react-router-dom";
 // import { useQuery } from "@tanstack/react-query";
-import {
-  BookOpen,
-  Files,
-  FileText,
-  Menu,
-  Mic,
-  Youtube,
-} from "lucide-react";
+import { BookOpen, Files, FileText, Menu, Mic, Youtube } from "lucide-react";
 // import { getUser } from "../api";
 import {
   Breadcrumb,
@@ -37,6 +30,8 @@ import {
 import { UserAvatar } from "../components/user-avatar";
 import { cn } from "../lib/cn";
 import { PrivateRoute } from "./private";
+
+import ChatbotInterface from "../components/chatbot/chatbot";
 
 function NavigationItem({
   to,
@@ -159,7 +154,33 @@ function MobileNavigation(props: { open: boolean; onOpenChange: () => void }) {
 }
 
 function Component() {
-  const [isSheetOpen, setIsSheetOpen] = React.useState(false);
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://app.chatwoot.com/packs/js/sdk.js";
+    script.defer = true;
+    script.async = true;
+    script.onload = () => {
+      //@ts-ignore
+      window.chatwootSettings = {
+        position: "left", // Change to "left" or "right"
+        type: "standard",
+        launcherTitle: "Chat with us",
+      };
+      //@ts-ignore
+      window.chatwootSDK.run({
+        websiteToken: "xwfSJZhV2i9HyFQ28ie3jHCx",
+        baseUrl: "https://app.chatwoot.com",
+      });
+    };
+    document.body.appendChild(script);
+
+    // Cleanup script when the component unmounts
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
 
   // const userQuery = useQuery({
   //   queryKey: ["me"],
@@ -201,13 +222,14 @@ function Component() {
             )}
             {userQuery.isSuccess && <UserAvatar user={userQuery.data} />} */}
 
-            <UserAvatar 
+            <UserAvatar
               user={{
                 id: "1",
                 name: "Abi Shrestha",
                 email: "39abii@gmail.com",
-                avatar: "https://gravatar.com/avatar/58afca37391e56b6c99cbc82c955676b?s=200&d=retro&r=pg"
-              }} 
+                avatar:
+                  "https://gravatar.com/avatar/58afca37391e56b6c99cbc82c955676b?s=200&d=retro&r=pg",
+              }}
             />
           </div>
         </header>
@@ -225,6 +247,7 @@ function Component() {
             </BreadcrumbList>
           </Breadcrumb>
           <Outlet />
+          <ChatbotInterface />
         </main>
       </div>
 

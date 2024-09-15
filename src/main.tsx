@@ -16,15 +16,19 @@ import { Toaster } from "./components/toaster.tsx";
 import { Files } from "./routes/files.tsx";
 import { Home } from "./routes/home.tsx";
 import { Lectures } from "./routes/lectures.tsx";
+import { Login } from "./routes/login.tsx";
 import { Root } from "./routes/root.tsx";
 import { Youtube } from "./routes/youtube.tsx";
-import {Login} from "./routes/login.tsx"
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
   },
+  {
+    path: "/login",
+    element: <Login />,
+  },  
   {
     path: "/lectures",
     element: <Root />,
@@ -55,10 +59,7 @@ const router = createBrowserRouter([
       },
     ],
   },
-  {
-    path: "/login",
-    element: <Login/>
-  },
+
   {
     path: "*",
     element: <NotFound />,
