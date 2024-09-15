@@ -22,7 +22,7 @@ export function Home() {
           </p>
           <a
             href={HomePageConfig.content.cta.link}
-            className="my-4 inline-block rounded-full bg-primary px-8 py-3 text-lg font-semibold text-white transition-colors hover:bg-secondary"
+            className="my-4 inline-block rounded-full bg-primary px-8 py-3 text-lg font-semibold text-white transition-colors hover:bg-blue-700"
           >
             {HomePageConfig.content.cta.text}
           </a>
