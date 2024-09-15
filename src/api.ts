@@ -1,19 +1,29 @@
-import ky from "ky";
-import type { User, Session } from "./types";
+import axios from "axios";
+import { toast } from "sonner";
 
-const api = ky.create({
-  prefixUrl: import.meta.env.VITE_API_URL,
-  retry: 0,
+
+const myHeaders = {
+  "Content-Type": "application/json",
+};
+
+
+const api = axios.create({
+  baseURL: "https://api.sthaarun.com.np",
+  headers: myHeaders,
 });
 
-export async function login(email: string, password: string) {
-  const user: Session = await api
-    .post("/api/login", { json: { email, password } })
-    .json();
-  return user;
+
+export const getYoutubeSummary = async (url: string) => {
+  try {
+    const response = await api.post("/youtube", JSON.stringify({ url: url }))
+    toast.success("Data fetched successfully");
+    console.log(response.data.note);
+    return response.data.note;
+  } catch (error) {
+    toast.error("Error fetching data");
+    console.error(error);
+  }
+ 
 }
 
-export async function getUser() {
-  const user: User = await api.get("/api/me").json();
-  return user;
-}
+export default api;

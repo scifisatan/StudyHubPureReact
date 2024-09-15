@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { toast } from "sonner";
+import { getYoutubeSummary } from "../api";
 import { MarkdownRenderer } from "../components/markdown-renderer";
 import { PrivateRoute } from "./private";
-import { toast } from "sonner";
+
 function YouTubeEmbed({ videoId }: { videoId: string }) {
   return (
     <div className="aspect-w-16 aspect-h-9">
@@ -30,22 +32,27 @@ function YoutubePage() {
 
   const handleYoutubeLinkChange = (e: React.FormEvent) => {
     setYoutubeLink((e.target as HTMLInputElement).value);
-    const extractedVideoId = extractVideoId((e.target as HTMLInputElement).value);
+    const extractedVideoId = extractVideoId(
+      (e.target as HTMLInputElement).value,
+    );
     if (extractedVideoId) {
       setVideoId(extractedVideoId);
       setIsValidLink(true);
       toast.success("Video ID extracted successfully!");
-     
-    } 
+    }
   };
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setMarkdownContent(`like share and subscribe guys`);
+
     if (!videoId) {
       toast.error("Invalid YouTube link");
       return;
     }
-  }
+
+    getYoutubeSummary(youtubeLink).then((data) => {
+      setMarkdownContent(data);
+    });
+  };
 
   return (
     <div className="space-y-6">
@@ -55,7 +62,7 @@ function YoutubePage() {
           value={youtubeLink}
           onChange={handleYoutubeLinkChange}
           placeholder="Enter YouTube link"
-          className="flex-grow rounded border px-4 py-2 bg-background text-foreground"
+          className="flex-grow rounded border bg-background px-4 py-2 text-foreground"
         />
         <button
           type="submit"

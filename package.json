@@ -27,6 +27,7 @@
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-tooltip": "^1.1.2",
     "@tanstack/react-query": "^5.51.23",
+    "axios": "^1.7.7",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "js-cookie": "^3.0.5",
@@ -44,7 +45,7 @@
   },
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "^4.3.1",
-  "@types/js-cookie": "^3.0.6",
+    "@types/js-cookie": "^3.0.6",
     "@types/node": "^22.2.0",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
@@ -61,7 +62,7 @@
     "postcss": "^8.4.41",
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.6",
-   "tailwindcss": "^3.4.9",
+    "tailwindcss": "^3.4.9",
     "typescript": "^5.5.4",
     "vite": "^5.4.0"
   },
