@@ -1,6 +1,6 @@
 import { AlertCircle } from "lucide-react";
-import { Button } from "./button";
-import { Card } from "./card";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 
 export function ErrorPage(props: { message: string; onRetry: () => void }) {
   return (
