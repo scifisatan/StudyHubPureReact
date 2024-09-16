@@ -2,11 +2,12 @@
 import React, { useState, useRef } from 'react'
 import { Mic, Square } from 'lucide-react'
 import { toast } from "sonner";
+import { getLectureSummary } from '@/api';
 type VoiceRecorderProps = {
     setMarkdownContent: (content: string) => void;
 };
 
-const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ setMarkdownContent }) => {
+const VoiceRecorder: React.FC<VoiceRecorderProps> = ({setMarkdownContent }) => {
     const [isRecording, setIsRecording] = useState(false)
     const [audioUrl, setAudioUrl] = useState<string | null>(null)
     const mediaRecorderRef = useRef<MediaRecorder | null>(null)
@@ -21,8 +22,13 @@ const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ setMarkdownContent }) => 
 
             mediaRecorderRef.current.ondataavailable = (e) => chunks.push(e.data)
             mediaRecorderRef.current.onstop = () => {
-                const blob = new Blob(chunks, { type: 'audio/ogg; codecs=opus' })
+                const blob = new Blob(chunks, { type: 'audio/wav' })
                 setAudioUrl(URL.createObjectURL(blob))
+                getLectureSummary(blob).then((data) => {
+                    setMarkdownContent(data)
+                }
+                )
+               
             }
 
             mediaRecorderRef.current.start()
@@ -63,7 +69,6 @@ const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ setMarkdownContent }) => 
                 <span className="text-xs" >{isRecording ? 'Stop recording' : 'Start recording'}</span>
                 </div>
             {audioUrl && (
-                
                     <audio  controls ref={audioRef} src={audioUrl}  />
             )}
         </div>

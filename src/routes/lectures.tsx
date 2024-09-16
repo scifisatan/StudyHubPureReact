@@ -6,7 +6,7 @@ import VoiceRecorder from '../components/voice-recorder'
 
 function QueryLectures() {
     const [markdownContent, setMarkdownContent] = useState('Your notes will appear here')
-
+    
   return (
 
       <div className="space-y-6">
