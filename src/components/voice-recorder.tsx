@@ -14,7 +14,6 @@ const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
 }) => {
   const [isRecording, setIsRecording] = useState(false);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
-  const [audio, setAudio] = useState<Blob | null>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -27,8 +26,23 @@ const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
       mediaRecorderRef.current.ondataavailable = (e) => chunks.push(e.data);
       mediaRecorderRef.current.onstop = () => {
         const blob = new Blob(chunks, { type: "audio/wav" });
-        setAudio(blob);
         setAudioUrl(URL.createObjectURL(blob));
+
+        try {
+          getLectureSummary(blob as Blob)
+            .then((data) => {
+              setMarkdownContent(data);
+              setIsLoading(false);
+            })
+            .catch((error) => {
+              console.error("Error fetching lecture summary:", error);
+              setIsLoading(false);
+            });
+        } catch (err) {
+          console.error(err);
+          toast.error("Failed to record audio. Please try again.");
+          setIsLoading(false);
+        }
       };
 
       mediaRecorderRef.current.start();
@@ -39,27 +53,9 @@ const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
   };
 
   const stopRecording = () => {
-    setIsLoading(true);
     if (mediaRecorderRef.current) {
       mediaRecorderRef.current.stop();
       setIsRecording(false);
-
-      if (audio instanceof Blob) {
-        getLectureSummary(audio)
-          .then((data) => {
-            setMarkdownContent(data);
-            setIsLoading(false);
-          })
-          .catch((error) => {
-            console.error("Error fetching lecture summary:", error);
-            setIsLoading(false);
-          });
-      } else {
-        console.error("Audio is not a Blob.");
-        toast.error("Failed to record audio. Please try again.");
-        setIsLoading(false);
-      }
-
       toast.success("Audio has been recorded successfully.");
     }
   };

@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { getChatResponse } from "@/api";
-import { useUser } from "@/components/hooks/use-user";
 import { ChevronLeft, ChevronRight, Send } from "lucide-react";
 
 const MIN_WIDTH = 300;
@@ -19,7 +18,7 @@ export const ChatSideBar = ({ context }: ChatSideBarProps) => {
   );
   const [inputMessage, setInputMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
-  const { userID } = useUser();
+  const userID = localStorage.getItem("userID");
 
   const sidebarRef = useRef(null);
   const dragHandleRef = useRef(null);
@@ -72,6 +71,7 @@ export const ChatSideBar = ({ context }: ChatSideBarProps) => {
       setIsTyping(true);
       try {
         if (!userID) {
+          console.log(userID)
           throw new Error(
             "There has been an error regarding user. Please login again to fix this issue ",
           );
