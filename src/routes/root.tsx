@@ -19,6 +19,7 @@ import {
   BreadcrumbSeparator,
 } from "../components/breadcrumb";
 import { Button } from "../components/button";
+import ChatSidebar from "../components/chatsidebar";
 import { ModeToggle } from "../components/mode-toggle";
 import { Sheet, SheetContent, SheetTitle } from "../components/sheet";
 import {
@@ -30,8 +31,6 @@ import {
 import { UserAvatar } from "../components/user-avatar";
 import { cn } from "../lib/cn";
 import { PrivateRoute } from "./private";
-
-import ChatbotInterface from "../components/chatbot/chatbot";
 
 function NavigationItem({
   to,
@@ -246,8 +245,10 @@ function Component() {
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
-          <Outlet />
-          <ChatbotInterface />
+          <div className="relative min-h-screen">
+            <Outlet />
+            <ChatSidebar />
+          </div>
         </main>
       </div>
 
