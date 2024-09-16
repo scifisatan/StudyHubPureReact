@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { toast } from "sonner";
-import { getYoutubeSummary } from "../api";
-import { MarkdownRenderer } from "../components/markdown-renderer";
-import { PrivateRoute } from "./private";
+import { getYoutubeSummary } from "@/api";
+import { ChatSideBar } from "@/components/chatsidebar";
+import { MarkdownRenderer } from "@/components/markdown-renderer";
+import { PrivateRoute } from "@/routes/private";
 import { Loader2 } from "lucide-react";
-import ChatSideBar from "@/components/chatsidebar";
+import { toast } from "sonner";
 
 function YouTubeEmbed({ videoId }: { videoId: string }) {
   return (
@@ -18,13 +18,13 @@ function YouTubeEmbed({ videoId }: { videoId: string }) {
 }
 
 function YoutubePage() {
-  const [youtubeLink, setYoutubeLink] = useState("");
   const [videoId, setVideoId] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [youtubeLink, setYoutubeLink] = useState("");
   const [isValidLink, setIsValidLink] = useState(false);
   const [markdownContent, setMarkdownContent] = useState(
-    "Your notes will appear here"
+    "Your notes will appear here",
   );
-  const [isLoading, setIsLoading] = useState(false);
 
   const extractVideoId = (url: string) => {
     const regExp =
@@ -61,7 +61,7 @@ function YoutubePage() {
       if (error.response && error.response.status === 503) {
         toast.error("No transcript available for this video.");
       } else {
-      toast.error("Failed to fetch summary. Please try again.");
+        toast.error("Failed to fetch summary. Please try again.");
       }
     } finally {
       setIsLoading(false);
@@ -103,7 +103,7 @@ function YoutubePage() {
       ) : (
         <MarkdownRenderer content={markdownContent} />
       )}
-      <ChatSideBar  context = {markdownContent} />
+      <ChatSideBar context={markdownContent} />
     </div>
   );
 }

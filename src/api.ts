@@ -2,17 +2,16 @@ import axios from "axios";
 import { toast } from "sonner";
 
 const baseURL = import.meta.env.VITE_API_URL;
+
 if (!baseURL) {
   throw new Error("VITE_API_URL environment variable is not defined");
 }
 
-const myHeaders = {
-  "Content-Type": "application/json",
-};
-
 const api = axios.create({
   baseURL: baseURL,
-  headers: myHeaders,
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
 const handleApiCall = async (endpoint: string, data: any, headers = {}) => {
@@ -24,8 +23,6 @@ const handleApiCall = async (endpoint: string, data: any, headers = {}) => {
     console.error(error);
   }
 };
-
-
 
 export const getYoutubeSummary = async (url: string) => {
   return handleApiCall("/youtube", { url });
@@ -47,10 +44,18 @@ export const getLectureSummary = async (blob: Blob) => {
   });
 };
 
-
-export const getChatResponse = async (message: string, senderID: string, context: string) => {
+export const getChatResponse = async (
+  message: string,
+  senderID: string,
+  context: string,
+) => {
   try {
-    const response = await api.post("/chat", { message, sender: senderID, context });
+    const response = await api.post("/chat", {
+      message,
+      sender: senderID,
+      context,
+    });
+    console.log(response.data[0].text);
     return response.data[0].text;
   } catch (error) {
     console.error(error);

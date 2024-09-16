@@ -1,8 +1,4 @@
-import {
-  BookOpen,
-  Github,
-  Linkedin,
-} from "lucide-react";
+import { BookOpen, Github, Linkedin } from "lucide-react";
 import { ModeToggle } from "../components/mode-toggle";
 import { HomePageConfig } from "../config/homepageConfig";
 import { FeatureCardProps, FounderCardProps } from "../types";
@@ -18,7 +14,7 @@ export function Home() {
             {HomePageConfig.content.welcomeMessage}
           </h1>
           <p className="mx-auto my-16 max-w-2xl text-xl text-muted-foreground">
-           {HomePageConfig.content.description}
+            {HomePageConfig.content.description}
           </p>
           <a
             href={HomePageConfig.content.cta.link}
@@ -75,7 +71,9 @@ function Navbar() {
       <nav className="flex items-center justify-around md:justify-between">
         <div className="flex items-center space-x-2">
           <BookOpen className="h-8 w-8 text-primary" />
-          <span className="text-foregroun text-2xl font-bold">{HomePageConfig.title}</span>
+          <span className="text-foregroun text-2xl font-bold">
+            {HomePageConfig.title}
+          </span>
         </div>
         <div className="flex items-center space-x-4">
           <ModeToggle />

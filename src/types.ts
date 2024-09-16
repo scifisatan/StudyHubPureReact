@@ -9,7 +9,7 @@ export interface User {
   avatar: string;
 }
 
-export type FounderCardProps = { 
+export type FounderCardProps = {
   name: string;
   role: string;
   linkedinUrl: string;

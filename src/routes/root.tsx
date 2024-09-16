@@ -7,9 +7,7 @@ import {
   useLocation,
   useMatch,
 } from "react-router-dom";
-// import { useQuery } from "@tanstack/react-query";
-import { BookOpen, Files, FileText, Menu, Mic, Youtube } from "lucide-react";
-// import { getUser } from "../api";
+import { ModeToggle } from "@/components/mode-toggle";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -17,19 +15,19 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "../components/breadcrumb";
-import { Button } from "../components/button";
-import { ModeToggle } from "../components/mode-toggle";
-import { Sheet, SheetContent, SheetTitle } from "../components/sheet";
+} from "@/components/ui/breadcrumb";
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "../components/tooltip";
-import { UserAvatar } from "../components/user-avatar";
-import { cn } from "../lib/cn";
-import { PrivateRoute } from "./private";
+} from "@/components/ui/tooltip";
+import { UserAvatar } from "@/components/user-avatar";
+import { cn } from "@/lib/utils";
+import { PrivateRoute } from "@/routes/private";
+import { BookOpen, Files, FileText, Menu, Mic, Youtube } from "lucide-react";
 
 function NavigationItem({
   to,
@@ -155,7 +153,7 @@ function Component() {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
 
   {
-    if ((import.meta.env.VITE_CHATWOOT_ENABLED || 'false') === 'true') {
+    if ((import.meta.env.VITE_CHATWOOT_ENABLED || "false") === "true") {
       useEffect(() => {
         const script = document.createElement("script");
         script.src = "https://app.chatwoot.com/packs/js/sdk.js";
@@ -184,13 +182,8 @@ function Component() {
     }
   }
 
-  // const userQuery = useQuery({
-  //   queryKey: ["me"],
-  //   queryFn: getUser,
-  // });
   let location = useLocation();
   let currentRoute = location.pathname.split("/")[1];
-  //convert currentRoute into camelcase
 
   currentRoute = currentRoute.charAt(0).toUpperCase() + currentRoute.slice(1);
 
@@ -214,16 +207,8 @@ function Component() {
             >
               <Menu />
             </Button>
-
             <h1 className="grow text-lg font-medium">{currentRoute}</h1>
-
             <ModeToggle />
-
-            {/* {userQuery.isPending && (
-              <Skeleton className="size-10 rounded-full" />
-            )}
-            {userQuery.isSuccess && <UserAvatar user={userQuery.data} />} */}
-
             <UserAvatar
               user={{
                 id: "1",
@@ -240,7 +225,7 @@ function Component() {
           <Breadcrumb className="mb-6">
             <BreadcrumbList>
               <BreadcrumbItem>
-                <BreadcrumbLink to="/">Home</BreadcrumbLink>
+                <BreadcrumbLink>Home</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
@@ -248,9 +233,8 @@ function Component() {
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
-        
-            <Outlet />
-        
+
+          <Outlet />
         </main>
       </div>
 

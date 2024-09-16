@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useState, useEffect } from "react";
+import { createContext, ReactNode, useEffect, useState } from "react";
 
 // Define the shape of the context value
 interface UserContextType {
@@ -7,7 +7,9 @@ interface UserContextType {
 }
 
 // Create the context with a default value
-const UserContext = createContext<UserContextType | undefined>(undefined);
+export const UserContext = createContext<UserContextType | undefined>(
+  undefined,
+);
 
 // Create a provider component
 export const UserProvider = ({ children }: { children: ReactNode }) => {
@@ -31,19 +33,3 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     </UserContext.Provider>
   );
 };
-
-// Custom hook to use the UserContext
-export const useUser = () => {
-  const context = useContext(UserContext);
-  if (context === undefined) {
-    throw new Error("useUser must be used within a UserProvider");
-  }
-  return context;
-};
-
-interface UserContextType {
-  userID: string | null;
-  setUserID: (userId: string) => void;
-}
-
-export type { UserContextType };

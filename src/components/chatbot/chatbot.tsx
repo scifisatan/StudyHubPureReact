@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import "./khwopaChatStyles.css";
-import { Send } from 'lucide-react';
-import { X } from 'lucide-react';
+import { Send, X } from "lucide-react";
 import { v4 as uuidv4 } from "uuid";
 
 const ChatbotInterface = () => {
   const [userId, setUserId] = useState(uuidv4());
   const [isChatBoxOpened, setIsChatBoxOpened] = useState(false);
   const [chatBoxVisible, setChatBoxVisible] = useState(false);
-  const [messages, setMessages] = useState<{ id: string; sender: string; content: string }[]>([]);
+  const [messages, setMessages] = useState<
+    { id: string; sender: string; content: string }[]
+  >([]);
   const [typing, setTyping] = useState(false);
   const [inputValue, setInputValue] = useState("");
-
 
   const toggleChatBox = () => {
     setChatBoxVisible(!chatBoxVisible);
@@ -70,23 +70,21 @@ const ChatbotInterface = () => {
       });
   };
 
-
-
-const addBotResponseToChatBox = (response: { text: string }[]) => {
+  const addBotResponseToChatBox = (response: { text: string }[]) => {
     appendMessage(response[0].text, "bot");
-};
+  };
 
-  const handleInputChange = (e: { target: { value: React.SetStateAction<string>; }; }) => {
+  const handleInputChange = (e: {
+    target: { value: React.SetStateAction<string> };
+  }) => {
     setInputValue(e.target.value);
   };
 
-  const handleKeyPress = (e: { which: number; }) => {
+  const handleKeyPress = (e: { which: number }) => {
     if (e.which === 13) {
       sendQuery();
     }
   };
-
-
 
   // const clearMessageForms = () => {
   //   const messageForms = document.getElementsByClassName("messageForm");
@@ -95,11 +93,14 @@ const addBotResponseToChatBox = (response: { text: string }[]) => {
   //   }
   // };
 
-
   return (
     <div id="Arun_chat_ui" className="chat-theme">
       <div id="chat-icon" className="ripple" onClick={toggleChatBox}>
-      {chatBoxVisible ? <X size={24} className="text-white"/> : <img src="/bot.png" alt="Bot Icon" />}
+        {chatBoxVisible ? (
+          <X size={24} className="text-white" />
+        ) : (
+          <img src="/bot.png" alt="Bot Icon" />
+        )}
       </div>
       {chatBoxVisible && (
         <div id="chat-box" className={chatBoxVisible ? "open" : ""}>
@@ -114,9 +115,7 @@ const addBotResponseToChatBox = (response: { text: string }[]) => {
           <div id="chat-box-body" className="bg-secondary">
             {messages.map((msg) => (
               <div key={msg.id} className={`chat-message ${msg.sender}`}>
-                {msg.sender === "bot" && (
-                  <img src="/bot.png" alt="bot image" />
-                )}
+                {msg.sender === "bot" && <img src="/bot.png" alt="bot image" />}
                 <div
                   className="message-content bg-secondary text-black"
                   dangerouslySetInnerHTML={{ __html: msg.content }}
@@ -147,7 +146,6 @@ const addBotResponseToChatBox = (response: { text: string }[]) => {
             <button id="send-button" onClick={sendQuery}>
               <Send />
             </button>
-            
           </div>
         </div>
       )}

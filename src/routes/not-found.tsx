@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { CircleX } from "lucide-react";
-import { Button } from "./button";
-import { Card } from "./card";
 
 export function NotFound() {
   return (

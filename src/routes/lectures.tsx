@@ -1,5 +1,5 @@
 import { useState } from "react";
-import ChatSideBar from "@/components/chatsidebar";
+import { ChatSideBar } from "@/components/chatsidebar";
 import { Loader2 } from "lucide-react";
 import { MarkdownRenderer } from "../components/markdown-renderer";
 import VoiceRecorder from "../components/voice-recorder";

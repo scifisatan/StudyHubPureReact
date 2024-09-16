@@ -1,11 +1,5 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useUser } from "@/components/context/usercontext";
-// import { useMutation } from "@tanstack/react-query";
-import Cookies from "js-cookie";
-import { v4 as uuidv4 } from "uuid";
-// import { AlertCircle } from "lucide-react";
-// import { login } from "../api";
-// import { Alert, AlertDescription, AlertTitle } from "../components/alert";
+import { LoadingButton } from "@/components/loading-button";
 import {
   Card,
   CardContent,
@@ -13,48 +7,21 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../components/card";
-import { Input } from "../components/input";
-import { Label } from "../components/label";
-import { LoadingButton } from "../components/loading-button";
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { v4 as uuidv4 } from "uuid";
 
 export function Login() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const userID = uuidv4();
-  const { setUserID } = useUser();
-
-  // const loginMutation = useMutation<
-  //   Session,
-  //   Error,
-  //   { email: string; password: string }
-  // >({
-  //   mutationFn: (variables) => login(variables.email, variables.password),
-  // });
-
+  
   return (
     <form
       onSubmit={(event) => {
         event.preventDefault();
-
-        // const formData = new FormData(event.currentTarget);
-
-        // loginMutation.mutate(
-        //   {
-        //     email: formData.get("email") as string,
-        //     password: formData.get("password") as string,
-        //   },
-        //   {
-        //     onSuccess: (data) => {
-        //       // Redirect to the home page
-        //       Cookies.set("token", data.token);
-        //       navigate(searchParams.get("to") ?? "/lectures");
-        //     },
-        //   },
-        // );
-
-        setUserID(userID);
-        Cookies.set("token", "12345678");
+        localStorage.setItem("userID", userID);
         navigate(searchParams.get("to") ?? "/lectures");
       }}
     >
@@ -89,27 +56,10 @@ export function Login() {
             </div>
           </CardContent>
           <CardFooter>
-            <LoadingButton
-              // loading={loginMutation.isPending}
-              loading={false}
-              type="submit"
-              className="w-full"
-            >
+            <LoadingButton loading={false} type="submit" className="w-full">
               Sign in
             </LoadingButton>
           </CardFooter>
-
-          {/* {loginMutation.isError && (
-            <CardFooter>
-              <Alert variant="destructive">
-                <AlertCircle className="size-4" />
-                <AlertTitle>Oops!</AlertTitle>
-                <AlertDescription>
-                  {loginMutation.error.message}
-                </AlertDescription>
-              </Alert>
-            </CardFooter>
-          )} */}
         </Card>
       </div>
     </form>

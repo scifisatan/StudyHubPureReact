@@ -1,7 +1,5 @@
 import { Link } from "react-router-dom";
-import Cookies from "js-cookie";
-import type { User } from "../types";
-import { Button } from "./button";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,7 +7,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "./dropdown-menu";
+} from "@/components/ui/dropdown-menu";
+import type { User } from "@/types";
 
 export function UserAvatar(props: { user: User }) {
   return (
@@ -40,7 +39,7 @@ export function UserAvatar(props: { user: User }) {
           <Link
             to="/login"
             onClick={() => {
-              Cookies.remove("token");
+                localStorage.removeItem("userID"); 
             }}
           >
             Log out

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { ChevronLeft, ChevronRight, Send } from "lucide-react";
 import { getChatResponse } from "@/api";
-import { useUser } from "./context/usercontext";
+import { useUser } from "@/components/hooks/use-user";
+import { ChevronLeft, ChevronRight, Send } from "lucide-react";
 
 const MIN_WIDTH = 300;
 const MAX_WIDTH = 600;
@@ -10,7 +10,7 @@ type ChatSideBarProps = {
   context: string;
 };
 
-const ChatSideBar = ({context}:ChatSideBarProps) => {
+export const ChatSideBar = ({ context }: ChatSideBarProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [width, setWidth] = useState(MIN_WIDTH);
   const [isDragging, setIsDragging] = useState(false);
@@ -19,7 +19,7 @@ const ChatSideBar = ({context}:ChatSideBarProps) => {
   );
   const [inputMessage, setInputMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
-  const {userID} = useUser();
+  const { userID } = useUser();
 
   const sidebarRef = useRef(null);
   const dragHandleRef = useRef(null);
@@ -70,24 +70,23 @@ const ChatSideBar = ({context}:ChatSideBarProps) => {
       setMessages([...messages, { text: inputMessage, sender: "user" }]);
       setInputMessage("");
       setIsTyping(true);
-      try{
+      try {
         if (!userID) {
-          throw new Error("There has been an error regarding user. Please login again to fix this issue ");
+          throw new Error(
+            "There has been an error regarding user. Please login again to fix this issue ",
+          );
         }
         if (context === "Your notes will appear here") {
           throw new Error("First provide the resources to chat with the bot ");
         }
-        const response = await getChatResponse(inputMessage, userID , context);
+        const response = await getChatResponse(inputMessage, userID, context);
         console.log(response);
-        setMessages((prev) => [
-          ...prev,
-          { text: response, sender: "bot" },
-        ]);
+        setMessages((prev) => [...prev, { text: response, sender: "bot" }]);
         setIsTyping(false);
-      } catch (error : any) {
+      } catch (error: any) {
         setMessages((prev) => [
           ...prev,
-          { text: error.message , sender: "bot" },
+          { text: error.message, sender: "bot" },
         ]);
         setIsTyping(false);
       }
@@ -97,7 +96,7 @@ const ChatSideBar = ({context}:ChatSideBarProps) => {
   return (
     <div
       ref={sidebarRef}
-      className={`fixed right-0 bottom-0 flex h-full bg-secondary shadow-2xl transition-all duration-300 ease-in-out`}
+      className={`fixed bottom-0 right-0 flex h-full bg-secondary shadow-2xl transition-all duration-300 ease-in-out`}
       style={{
         width: isExpanded ? `${width}px` : "0px",
       }}
@@ -120,7 +119,7 @@ const ChatSideBar = ({context}:ChatSideBarProps) => {
         />
 
         <div className="flex h-full flex-col overflow-hidden p-4">
-          <h2 className="mb-4 text-xl text-background font-bold">...</h2>
+          <h2 className="mb-4 text-xl font-bold text-background">...</h2>
 
           <div
             className="mb-4 flex-grow overflow-y-auto pr-2"
@@ -185,5 +184,3 @@ const ChatSideBar = ({context}:ChatSideBarProps) => {
     </div>
   );
 };
-
-export default ChatSideBar;
