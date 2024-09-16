@@ -79,6 +79,9 @@ export const ChatSideBar = ({ context }: ChatSideBarProps) => {
         if (context === "Your notes will appear here") {
           throw new Error("First provide the resources to chat with the bot ");
         }
+        if (!context) {
+          throw new Error("Unfortunately, there's nothing to talk about");
+        }
         const response = await getChatResponse(inputMessage, userID, context);
         console.log(response);
         setMessages((prev) => [...prev, { text: response, sender: "bot" }]);
