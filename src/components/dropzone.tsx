@@ -22,7 +22,7 @@ export function Dropzone(props) {
     }
   });
 
-  const baseStyle = 'flex flex-col items-center p-5 border-2 border-dashed rounded bg-secondary text-muted-foreground outline-none transition ease-in-out duration-150';
+  const baseStyle = 'flex flex-col items-center w-full p-5 border-2 border-dashed rounded bg-secondary text-muted-foreground outline-none transition ease-in-out duration-150';
   const focusedStyle = 'border-blue-500';
   const acceptStyle = 'border-green-500';
   const rejectStyle = 'border-red-500';
@@ -36,7 +36,7 @@ export function Dropzone(props) {
   }, [isFocused, isDragAccept, isDragReject]);
 
   return (
-    <div className="container ">
+    <div >
       <div {...getRootProps(({ className: style }))}>
         <input  {...getInputProps()} />
         {acceptedFiles.length > 0 ? (

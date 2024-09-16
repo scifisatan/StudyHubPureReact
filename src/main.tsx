@@ -19,7 +19,7 @@ import { Lectures } from "./routes/lectures.tsx";
 import { Login } from "./routes/login.tsx";
 import { Root } from "./routes/root.tsx";
 import { Youtube } from "./routes/youtube.tsx";
-
+import { UserProvider } from "@/components/context/usercontext.tsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -74,8 +74,10 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
+        <UserProvider>
         <RouterProvider router={router} fallbackElement={<AppLoading />} />
-        <Toaster />
+        <Toaster position="top-right" richColors duration={1500} />
+        </UserProvider>
       </ThemeProvider>
     </QueryClientProvider>
   </React.StrictMode>,

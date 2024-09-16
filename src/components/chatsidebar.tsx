@@ -1,10 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, Send } from "lucide-react";
+import { getChatResponse } from "@/api";
+import { useUser } from "./context/usercontext";
 
 const MIN_WIDTH = 300;
 const MAX_WIDTH = 600;
 
-const ChatSideBar = () => {
+type ChatSideBarProps = {
+  context: string;
+};
+
+const ChatSideBar = ({context}:ChatSideBarProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [width, setWidth] = useState(MIN_WIDTH);
   const [isDragging, setIsDragging] = useState(false);
@@ -13,6 +19,7 @@ const ChatSideBar = () => {
   );
   const [inputMessage, setInputMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const {userID} = useUser();
 
   const sidebarRef = useRef(null);
   const dragHandleRef = useRef(null);
@@ -58,28 +65,42 @@ const ChatSideBar = () => {
     setIsDragging(true);
   };
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (inputMessage.trim() && !isTyping) {
       setMessages([...messages, { text: inputMessage, sender: "user" }]);
       setInputMessage("");
       setIsTyping(true);
-
-      // Simulate response after 2 seconds
-      setTimeout(() => {
+      try{
+        if (!userID) {
+          throw new Error("There has been an error regarding user. Please login again to fix this issue ");
+        }
+        if (context === "Your notes will appear here") {
+          throw new Error("First provide the resources to chat with the bot ");
+        }
+        const response = await getChatResponse(inputMessage, userID , context);
+        console.log(response);
         setMessages((prev) => [
           ...prev,
-          { text: "This is a simulated response.", sender: "bot" },
+          { text: response, sender: "bot" },
         ]);
         setIsTyping(false);
-      }, 2000);
+      } catch (error : any) {
+        setMessages((prev) => [
+          ...prev,
+          { text: error.message , sender: "bot" },
+        ]);
+        setIsTyping(false);
+      }
     }
   };
 
   return (
     <div
       ref={sidebarRef}
-      className={`fixed right-0 top-0 flex h-full bg-secondary shadow-2xl transition-all duration-300 ease-in-out`}
-      style={{ width: isExpanded ? `${width}px` : "0px" }}
+      className={`fixed right-0 bottom-0 flex h-full bg-secondary shadow-2xl transition-all duration-300 ease-in-out`}
+      style={{
+        width: isExpanded ? `${width}px` : "0px",
+      }}
     >
       <div className="relative">
         <button
@@ -99,7 +120,7 @@ const ChatSideBar = () => {
         />
 
         <div className="flex h-full flex-col overflow-hidden p-4">
-          <h2 className="mb-4 text-xl font-bold">Chat</h2>
+          <h2 className="mb-4 text-xl text-background font-bold">...</h2>
 
           <div
             className="mb-4 flex-grow overflow-y-auto pr-2"
@@ -114,8 +135,8 @@ const ChatSideBar = () => {
                   <div
                     className={`inline-block rounded-lg p-2 text-white ${
                       message.sender === "user"
-                        ? "bg-blue-500"
-                        : "bg-black text-black"
+                        ? "bg-primary"
+                        : "bg-muted-foreground text-black"
                     }`}
                   >
                     {message.text}
@@ -148,7 +169,7 @@ const ChatSideBar = () => {
                 e.key === "Enter" && !isTyping && handleSendMessage()
               }
               className="flex-grow rounded-l-md border bg-background p-2"
-              placeholder="Type a message..."
+              placeholder="Chat with your resource..."
               disabled={isTyping}
             />
             <button

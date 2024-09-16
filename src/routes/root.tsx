@@ -19,7 +19,6 @@ import {
   BreadcrumbSeparator,
 } from "../components/breadcrumb";
 import { Button } from "../components/button";
-import ChatSidebar from "../components/chatsidebar";
 import { ModeToggle } from "../components/mode-toggle";
 import { Sheet, SheetContent, SheetTitle } from "../components/sheet";
 import {
@@ -155,31 +154,35 @@ function MobileNavigation(props: { open: boolean; onOpenChange: () => void }) {
 function Component() {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
 
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://app.chatwoot.com/packs/js/sdk.js";
-    script.defer = true;
-    script.async = true;
-    script.onload = () => {
-      //@ts-ignore
-      window.chatwootSettings = {
-        position: "left", // Change to "left" or "right"
-        type: "standard",
-        launcherTitle: "Chat with us",
-      };
-      //@ts-ignore
-      window.chatwootSDK.run({
-        websiteToken: "xwfSJZhV2i9HyFQ28ie3jHCx",
-        baseUrl: "https://app.chatwoot.com",
-      });
-    };
-    document.body.appendChild(script);
+  {
+    if ((import.meta.env.VITE_CHATWOOT_ENABLED || 'false') === 'true') {
+      useEffect(() => {
+        const script = document.createElement("script");
+        script.src = "https://app.chatwoot.com/packs/js/sdk.js";
+        script.defer = true;
+        script.async = true;
+        script.onload = () => {
+          //@ts-ignore
+          window.chatwootSettings = {
+            position: "left", // Change to "left" or "right"
+            type: "standard",
+            launcherTitle: "Chat with us",
+          };
+          //@ts-ignore
+          window.chatwootSDK.run({
+            websiteToken: "xwfSJZhV2i9HyFQ28ie3jHCx",
+            baseUrl: "https://app.chatwoot.com",
+          });
+        };
+        document.body.appendChild(script);
 
-    // Cleanup script when the component unmounts
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
+        // Cleanup script when the component unmounts
+        return () => {
+          document.body.removeChild(script);
+        };
+      }, []);
+    }
+  }
 
   // const userQuery = useQuery({
   //   queryKey: ["me"],
@@ -245,10 +248,9 @@ function Component() {
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
-          <div className="relative min-h-screen">
+        
             <Outlet />
-            <ChatSidebar />
-          </div>
+        
         </main>
       </div>
 

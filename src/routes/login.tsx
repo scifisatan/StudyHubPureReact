@@ -1,6 +1,8 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { useUser } from "@/components/context/usercontext";
 // import { useMutation } from "@tanstack/react-query";
 import Cookies from "js-cookie";
+import { v4 as uuidv4 } from "uuid";
 // import { AlertCircle } from "lucide-react";
 // import { login } from "../api";
 // import { Alert, AlertDescription, AlertTitle } from "../components/alert";
@@ -19,6 +21,8 @@ import { LoadingButton } from "../components/loading-button";
 export function Login() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const userID = uuidv4();
+  const { setUserID } = useUser();
 
   // const loginMutation = useMutation<
   //   Session,
@@ -48,6 +52,8 @@ export function Login() {
         //     },
         //   },
         // );
+
+        setUserID(userID);
         Cookies.set("token", "12345678");
         navigate(searchParams.get("to") ?? "/lectures");
       }}

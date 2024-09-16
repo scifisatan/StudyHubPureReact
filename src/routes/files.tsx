@@ -5,6 +5,7 @@ import { Dropzone } from "../components/dropzone";
 import { getPDFSummary } from "../api";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
+import ChatSideBar from "@/components/chatsidebar";
 
 function FilesPage() {
   const [markdownContent, setMarkdownContent] = useState(
@@ -13,9 +14,6 @@ function FilesPage() {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleFileChange = async (file: File) => {
-    if (file) {
-      console.log(file)
-    }
 
     setIsLoading(true);
     try {
@@ -42,6 +40,7 @@ function FilesPage() {
       ) : (
         <MarkdownRenderer content={markdownContent} />
       )}
+      <ChatSideBar context={markdownContent} />
     </div>
   );
 }

@@ -21,10 +21,11 @@ const handleApiCall = async (endpoint: string, data: any, headers = {}) => {
     toast.success("Data fetched successfully");
     return response.data.note;
   } catch (error) {
-    toast.error("Error fetching data");
     console.error(error);
   }
 };
+
+
 
 export const getYoutubeSummary = async (url: string) => {
   return handleApiCall("/youtube", { url });
@@ -44,6 +45,18 @@ export const getLectureSummary = async (blob: Blob) => {
   return handleApiCall("/audio", formData, {
     "Content-Type": "multipart/form-data",
   });
+};
+
+
+export const getChatResponse = async (message: string, senderID: string, context: string) => {
+  try {
+    const response = await api.post("/chat", { message, sender: senderID, context });
+    return response.data[0].text;
+  } catch (error) {
+    console.error(error);
+    toast.error("Error fetching chat response");
+    throw error; // Re-throw the error if you want to handle it further up the call stack
+  }
 };
 
 export default api;

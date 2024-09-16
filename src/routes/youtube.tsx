@@ -4,6 +4,7 @@ import { getYoutubeSummary } from "../api";
 import { MarkdownRenderer } from "../components/markdown-renderer";
 import { PrivateRoute } from "./private";
 import { Loader2 } from "lucide-react";
+import ChatSideBar from "@/components/chatsidebar";
 
 function YouTubeEmbed({ videoId }: { videoId: string }) {
   return (
@@ -56,8 +57,12 @@ function YoutubePage() {
     try {
       const data = await getYoutubeSummary(youtubeLink);
       setMarkdownContent(data);
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response && error.response.status === 503) {
+        toast.error("No transcript available for this video.");
+      } else {
       toast.error("Failed to fetch summary. Please try again.");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -98,6 +103,7 @@ function YoutubePage() {
       ) : (
         <MarkdownRenderer content={markdownContent} />
       )}
+      <ChatSideBar  context = {markdownContent} />
     </div>
   );
 }
