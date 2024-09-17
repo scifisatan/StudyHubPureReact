@@ -63,9 +63,11 @@ function NavigationItem({
 function Navigation() {
   return (
     <aside className="fixed inset-y-0 left-0 hidden w-[72px] border-r bg-background sm:block">
-      <div className="flex flex-col justify-center p-2">
+      <div className="flex flex-col justify-center p-2 pt-4">
         <a href="/" className="flex items-center justify-center">
-          <BookOpen className="size-12 w-full rounded-full bg-accent p-2 text-primary" />
+          <div className="rounded-full bg-accent">
+            <BookOpen className="size-14 p-2 text-primary" />
+          </div>
         </a>
       </div>
 
@@ -198,7 +200,7 @@ function Component() {
 
       <div className="flex w-full flex-col sm:pl-[72px]">
         <header className="sticky top-0 z-50 bg-transparent backdrop-blur">
-          <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-2">
+          <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-4">
             <Button
               variant="outline"
               size="icon"
@@ -207,7 +209,7 @@ function Component() {
             >
               <Menu />
             </Button>
-            <h1 className="grow text-lg font-medium">{currentRoute}</h1>
+            <h1 className="grow text-2xl font-medium">{currentRoute}</h1>
             <ModeToggle />
             <UserAvatar
               user={{
