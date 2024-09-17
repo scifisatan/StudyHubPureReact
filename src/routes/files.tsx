@@ -2,15 +2,13 @@ import { useState } from "react";
 import { getPDFSummary } from "@/api";
 import { ChatSideBar } from "@/components/chatsidebar";
 import { Dropzone } from "@/components/dropzone";
-import { MarkdownRenderer } from "@/components/markdown-renderer";
+import { Notes } from "@/components/notes";
 import { PrivateRoute } from "@/routes/private";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
-
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 function FilesPage() {
-  const [markdownContent, setMarkdownContent] = useState(
-    "Your notes will appear here",
-  );
+  const [markdownContent, setMarkdownContent] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const handleFileChange = async (file: File) => {
@@ -26,17 +24,26 @@ function FilesPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <div>
-        <Dropzone onFileChange={handleFileChange} />
-      </div>
-      {isLoading ? (
-        <div className="flex items-center justify-center py-8">
-          <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+    <div className="container mx-auto max-w-3xl space-y-6 p-4">
+      <Card className="mb-4">
+        <CardHeader>
+          <CardTitle className="text-2xl font-bold">
+            PDF Summarizer
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <Dropzone onFileChange={handleFileChange} />
+        </CardContent>
+      </Card>
+
+      {isLoading && (
+        <div className="flex items-center justify-center">
+          <Loader2 className="mr-2 h-8 w-8 animate-spin" />
+          <span>Processing the file...</span>
         </div>
-      ) : (
-        <MarkdownRenderer content={markdownContent} />
       )}
+
+      {markdownContent != "" && <Notes notes={markdownContent} />}
       <ChatSideBar context={markdownContent} />
     </div>
   );
