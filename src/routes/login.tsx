@@ -16,7 +16,7 @@ export function Login() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const userID = uuidv4();
-  
+
   return (
     <form
       onSubmit={(event) => {

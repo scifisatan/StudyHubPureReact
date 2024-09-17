@@ -10,8 +10,8 @@ import { router } from "@/config/routes.tsx";
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ThemeProvider>
-        <RouterProvider router={router} fallbackElement={<AppLoading />} />
-        <Toaster position="top-right" richColors duration={1500} />
+      <RouterProvider router={router} fallbackElement={<AppLoading />} />
+      <Toaster position="top-right" richColors duration={1500} />
     </ThemeProvider>
   </React.StrictMode>,
 );

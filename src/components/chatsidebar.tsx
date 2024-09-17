@@ -71,7 +71,6 @@ export const ChatSideBar = ({ context }: ChatSideBarProps) => {
       setIsTyping(true);
       try {
         if (!userID) {
-          console.log(userID)
           throw new Error(
             "There has been an error regarding user. Please login again to fix this issue ",
           );
@@ -83,7 +82,6 @@ export const ChatSideBar = ({ context }: ChatSideBarProps) => {
           throw new Error("Unfortunately, there's nothing to talk about");
         }
         const response = await getChatResponse(inputMessage, userID, context);
-        console.log(response);
         setMessages((prev) => [...prev, { text: response, sender: "bot" }]);
         setIsTyping(false);
       } catch (error: any) {

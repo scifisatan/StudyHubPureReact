@@ -1,7 +1,7 @@
 import ReactMarkdown from "react-markdown";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-export function Notes({notes}: {notes: string}) {
+export function Notes({ notes }: { notes: string }) {
   return (
     <Card>
       <CardHeader>
@@ -9,9 +9,7 @@ export function Notes({notes}: {notes: string}) {
       </CardHeader>
       <CardContent>
         <div className="prose max-w-none">
-          <ReactMarkdown className="whitespace-pre-wrap">
-            {notes}
-          </ReactMarkdown>
+          <ReactMarkdown className="whitespace-pre-wrap">{notes}</ReactMarkdown>
         </div>
       </CardContent>
     </Card>

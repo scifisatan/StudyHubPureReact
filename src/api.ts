@@ -55,7 +55,6 @@ export const getChatResponse = async (
       sender: senderID,
       context,
     });
-    console.log(response.data[0].text);
     return response.data[0].text;
   } catch (error) {
     console.error(error);

@@ -39,7 +39,7 @@ export function UserAvatar(props: { user: User }) {
           <Link
             to="/login"
             onClick={() => {
-                localStorage.removeItem("userID"); 
+              localStorage.removeItem("userID");
             }}
           >
             Log out
