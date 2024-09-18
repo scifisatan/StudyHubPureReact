@@ -6,7 +6,7 @@ import { Notes } from "@/components/notes";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PrivateRoute } from "@/routes/private";
-import { Loader, Loader2 } from "lucide-react";
+import {  Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 function FilesPage() {
