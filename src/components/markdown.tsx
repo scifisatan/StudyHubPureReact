@@ -3,7 +3,7 @@ import remarkGfm from "remark-gfm";
 
 export function MarkdownRenderer({ children }: { children: string }) {
   return (
-    <div className="prose max-w-none">
+    <div className="prose max-w-none overflow-auto">
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={{
