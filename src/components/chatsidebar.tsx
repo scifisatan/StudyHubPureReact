@@ -11,7 +11,9 @@ export const ChatSideBar: React.FC<ChatSideBarProps> = ({ context }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [width, setWidth] = useState(300);
   const [isDragging, setIsDragging] = useState(false);
-  const [messages, setMessages] = useState<{ text: string; sender: string }[]>([]);
+  const [messages, setMessages] = useState<{ text: string; sender: string }[]>(
+    [],
+  );
   const [inputMessage, setInputMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [minWidth, setMinWidth] = useState(300);
@@ -30,13 +32,15 @@ export const ChatSideBar: React.FC<ChatSideBarProps> = ({ context }) => {
     const newMaxWidth = Math.min(600, screenWidth * 0.8);
     setMinWidth(newMinWidth);
     setMaxWidth(newMaxWidth);
-    setWidth((prevWidth) => Math.min(Math.max(prevWidth, newMinWidth), newMaxWidth));
+    setWidth((prevWidth) =>
+      Math.min(Math.max(prevWidth, newMinWidth), newMaxWidth),
+    );
   };
 
   useEffect(() => {
     updateWidthConstraints();
-    window.addEventListener('resize', updateWidthConstraints);
-    return () => window.removeEventListener('resize', updateWidthConstraints);
+    window.addEventListener("resize", updateWidthConstraints);
+    return () => window.removeEventListener("resize", updateWidthConstraints);
   }, []);
 
   const scrollToBottom = () => {
@@ -45,6 +49,7 @@ export const ChatSideBar: React.FC<ChatSideBarProps> = ({ context }) => {
 
   useEffect(() => {
     scrollToBottom();
+    inputRef.current?.focus();
   }, [messages, isTyping]);
 
   useEffect(() => {
@@ -84,7 +89,9 @@ export const ChatSideBar: React.FC<ChatSideBarProps> = ({ context }) => {
       setIsTyping(true);
       try {
         if (!userID) {
-          throw new Error("There has been an error regarding user. Please login again to fix this issue");
+          throw new Error(
+            "There has been an error regarding user. Please login again to fix this issue",
+          );
         }
         if (context === "Your notes will appear here") {
           throw new Error("First provide the resources to chat with the bot");
@@ -95,10 +102,12 @@ export const ChatSideBar: React.FC<ChatSideBarProps> = ({ context }) => {
         const response = await getChatResponse(inputMessage, userID, context);
         setMessages((prev) => [...prev, { text: response, sender: "bot" }]);
       } catch (error: any) {
-        setMessages((prev) => [...prev, { text: error.message, sender: "bot" }]);
+        setMessages((prev) => [
+          ...prev,
+          { text: error.message, sender: "bot" },
+        ]);
       } finally {
         setIsTyping(false);
-        inputRef.current?.focus();
       }
     }
   };
@@ -129,10 +138,11 @@ export const ChatSideBar: React.FC<ChatSideBarProps> = ({ context }) => {
         />
 
         <div className="flex h-full flex-col p-4">
-          <h2 className="mb-6 text-xl font-bold text-background">Chat</h2>
+          {/* //This is here only to offset the topbar height */}
+          <h2 className="mb-6 text-xl font-bold text-secondary">.</h2>
 
           <div
-            className="mb-4 flex-grow overflow-y-auto pr-2 scrollbar-hide"
+            className="scrollbar-hide mb-4 flex-grow overflow-y-auto pr-2"
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
           >
             <div className="flex-1 space-y-4">
@@ -142,7 +152,7 @@ export const ChatSideBar: React.FC<ChatSideBarProps> = ({ context }) => {
                   className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"}`}
                 >
                   <div
-                    className={`max-w-[80%] rounded-lg p-3  ${
+                    className={`max-w-[80%] rounded-lg p-3 ${
                       message.sender === "user"
                         ? "bg-blue-100 text-blue-900"
                         : "bg-gray-100 text-gray-900"
@@ -157,8 +167,14 @@ export const ChatSideBar: React.FC<ChatSideBarProps> = ({ context }) => {
                   <div className="max-w-[80%] rounded-lg bg-gray-100 p-3">
                     <div className="flex space-x-2">
                       <div className="h-2 w-2 animate-bounce rounded-full bg-gray-400"></div>
-                      <div className="h-2 w-2 animate-bounce rounded-full bg-gray-400" style={{ animationDelay: "0.2s" }}></div>
-                      <div className="h-2 w-2 animate-bounce rounded-full bg-gray-400" style={{ animationDelay: "0.4s" }}></div>
+                      <div
+                        className="h-2 w-2 animate-bounce rounded-full bg-gray-400"
+                        style={{ animationDelay: "0.2s" }}
+                      ></div>
+                      <div
+                        className="h-2 w-2 animate-bounce rounded-full bg-gray-400"
+                        style={{ animationDelay: "0.4s" }}
+                      ></div>
                     </div>
                   </div>
                 </div>
@@ -186,7 +202,9 @@ export const ChatSideBar: React.FC<ChatSideBarProps> = ({ context }) => {
             <button
               onClick={handleSendMessage}
               className={`rounded-r-md p-2 text-white ${
-                isTyping ? "cursor-not-allowed bg-gray-400" : "bg-blue-500 hover:bg-blue-600"
+                isTyping
+                  ? "cursor-not-allowed bg-gray-400"
+                  : "bg-blue-500 hover:bg-blue-600"
               }`}
               disabled={isTyping}
             >
