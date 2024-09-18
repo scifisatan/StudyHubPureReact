@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { getChatResponse } from "@/api";
 import { ChevronLeft, ChevronRight, Send } from "lucide-react";
+import ReactMarkdown from "react-markdown";
 
 const MIN_WIDTH = 300;
 const MAX_WIDTH = 600;
@@ -139,7 +140,7 @@ export const ChatSideBar = ({ context }: ChatSideBarProps) => {
                         : "bg-muted-foreground text-black"
                     }`}
                   >
-                    {message.text}
+                    <ReactMarkdown>{message.text}</ReactMarkdown>
                   </div>
                 </div>
               ))}
