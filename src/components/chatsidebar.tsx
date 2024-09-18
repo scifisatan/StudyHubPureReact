@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { getChatResponse } from "@/api";
 import { ChevronLeft, ChevronRight, Send } from "lucide-react";
-import { MarkdownRenderer } from "./markdown";
+import { MarkdownRenderer } from "@/components/markdown";
 
 type ChatSideBarProps = {
   context: string;
@@ -11,9 +11,12 @@ export const ChatSideBar: React.FC<ChatSideBarProps> = ({ context }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [width, setWidth] = useState(300);
   const [isDragging, setIsDragging] = useState(false);
-  const [messages, setMessages] = useState<{ text: string; sender: string }[]>(
-    [],
-  );
+  const [messages, setMessages] = useState<{ text: string; sender: string }[]>([
+    {
+      text: " Welcome! I’m Gurukul Bot. I’m here to help with any questions you have about your study material. Just ask, and I’ll guide you through it!",
+      sender: "bot",
+    },
+  ]);
   const [inputMessage, setInputMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [minWidth, setMinWidth] = useState(300);
