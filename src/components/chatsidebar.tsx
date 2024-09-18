@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { getChatResponse } from "@/api";
 import { ChevronLeft, ChevronRight, Send } from "lucide-react";
-import ReactMarkdown from "react-markdown";
+import { MarkdownRenderer } from "./markdown";
 
 const MIN_WIDTH = 300;
 const MAX_WIDTH = 600;
@@ -83,6 +83,7 @@ export const ChatSideBar = ({ context }: ChatSideBarProps) => {
           throw new Error("Unfortunately, there's nothing to talk about");
         }
         const response = await getChatResponse(inputMessage, userID, context);
+        console.log(response);
         setMessages((prev) => [...prev, { text: response, sender: "bot" }]);
         setIsTyping(false);
       } catch (error: any) {
@@ -140,7 +141,7 @@ export const ChatSideBar = ({ context }: ChatSideBarProps) => {
                         : "bg-muted-foreground text-black"
                     }`}
                   >
-                    <ReactMarkdown>{message.text}</ReactMarkdown>
+                    <MarkdownRenderer>{message.text}</MarkdownRenderer>
                   </div>
                 </div>
               ))}
