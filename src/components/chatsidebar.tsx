@@ -1,25 +1,34 @@
 import React, { useEffect, useRef, useState } from "react";
-import { getChatResponse } from "@/api";
+import { getChatResponse, getSearchResponse } from "@/api";
 import { ChevronLeft, ChevronRight, Send } from "lucide-react";
-import { MarkdownRenderer } from "@/components/markdown";
+import "@/searchResults.css";
+
+// import { MarkdownRenderer } from "@/components/markdown";
 
 type ChatSideBarProps = {
   context: string;
+};
+
+type Message = {
+  content: string; // Changed from text to content to handle HTML
+  sender: string;
 };
 
 export const ChatSideBar: React.FC<ChatSideBarProps> = ({ context }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [width, setWidth] = useState(300);
   const [isDragging, setIsDragging] = useState(false);
-  const [messages, setMessages] = useState<{ text: string; sender: string }[]>([
+  const [messages, setMessages] = useState<Message[]>([
     {
-      text: " Welcome! I’m Gurukul Bot. I’m here to help with any questions you have about your study material. Just ask, and I’ll guide you through it!",
+      content:
+        "Welcome! I’m Gurukul Bot. I’m here to help with any questions you have about your study material. Just ask, and I’ll guide you through it!",
       sender: "bot",
     },
   ]);
+
   const [inputMessage, setInputMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
-  const [minWidth, setMinWidth] = useState(300);
+  const [minWidth, setMinWidth] = useState(500);
   const [maxWidth, setMaxWidth] = useState(600);
 
   const userID = localStorage.getItem("userID");
@@ -31,7 +40,7 @@ export const ChatSideBar: React.FC<ChatSideBarProps> = ({ context }) => {
 
   const updateWidthConstraints = () => {
     const screenWidth = window.innerWidth;
-    const newMinWidth = Math.min(300, screenWidth * 0.3);
+    const newMinWidth = Math.min(500, screenWidth * 0.3);
     const newMaxWidth = Math.min(600, screenWidth * 0.8);
     setMinWidth(newMinWidth);
     setMaxWidth(newMaxWidth);
@@ -87,7 +96,7 @@ export const ChatSideBar: React.FC<ChatSideBarProps> = ({ context }) => {
 
   const handleSendMessage = async () => {
     if (inputMessage.trim() && !isTyping) {
-      setMessages([...messages, { text: inputMessage, sender: "user" }]);
+      setMessages([...messages, { content: inputMessage, sender: "user" }]);
       setInputMessage("");
       setIsTyping(true);
       try {
@@ -102,12 +111,49 @@ export const ChatSideBar: React.FC<ChatSideBarProps> = ({ context }) => {
         if (!context) {
           throw new Error("Unfortunately, there's nothing to talk about");
         }
+
+        const formatSearchResults = (
+          results: { title: string; href: string; body: string }[],
+        ) => {
+          return results
+            .map(
+              (result) => `
+              <div class="card">
+                <a href="${result.href}" target="_blank" rel="noopener noreferrer" class="card-link">
+                <!--  <img src="${result.href}" alt="Thumbnail" class="card-thumbnail"/> -->
+                  <div class="card-content">
+                    <h3 class="card-title">${result.title}</h3>
+                    <p class="card-body">${result.body}</p>
+                  </div>
+                </a>
+              </div>
+            `,
+            )
+            .join("");
+        };
+
         const response = await getChatResponse(inputMessage, userID, context);
-        setMessages((prev) => [...prev, { text: response, sender: "bot" }]);
+        console.log(response);
+
+        if (response.trim().startsWith("<p>search_handover")) {
+          const searchQuery = response.trim().slice(17);
+          const results = await getSearchResponse(searchQuery);
+          const formattedResponse = formatSearchResults(results);
+          setMessages((prev) => [
+            ...prev,
+            { content: formattedResponse, sender: "bot" }, // Use content instead of text
+          ]);
+          return;
+        }
+
+        setMessages((prev) => [
+          ...prev,
+          { content: response, sender: "bot" }, // Use content instead of text
+        ]);
       } catch (error: any) {
         setMessages((prev) => [
           ...prev,
-          { text: error.message, sender: "bot" },
+          { content: `<p>${error.message}</p>`, sender: "bot" }, // Use content instead of text
         ]);
       } finally {
         setIsTyping(false);
@@ -160,11 +206,12 @@ export const ChatSideBar: React.FC<ChatSideBarProps> = ({ context }) => {
                         ? "bg-blue-100 text-blue-900"
                         : "bg-gray-100 text-gray-900"
                     }`}
-                  >
-                    <MarkdownRenderer>{message.text}</MarkdownRenderer>
-                  </div>
+                    // Using dangerouslySetInnerHTML to render HTML content
+                    dangerouslySetInnerHTML={{ __html: message.content }}
+                  />
                 </div>
               ))}
+
               {isTyping && (
                 <div className="flex justify-start">
                   <div className="max-w-[80%] rounded-lg bg-gray-100 p-3">

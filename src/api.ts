@@ -63,4 +63,17 @@ export const getChatResponse = async (
   }
 };
 
+export const getSearchResponse = async (query: string) => {
+  try {
+    const response = await api.post("/search", {
+      query,
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    toast.error("Error fetching chat response");
+    throw error; // Re-throw the error if you want to handle it further up the call stack
+  }
+};
+
 export default api;
