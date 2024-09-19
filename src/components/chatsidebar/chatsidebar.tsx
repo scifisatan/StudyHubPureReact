@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { getChatResponse, getSearchResponse } from "@/api";
 import { ChevronLeft, ChevronRight, Send } from "lucide-react";
 import "@/searchResults.css";
+import CarouselCards from "./search-results";
 
 // import { MarkdownRenderer } from "@/components/markdown";
 
@@ -10,7 +11,7 @@ type ChatSideBarProps = {
 };
 
 type Message = {
-  content: string; // Changed from text to content to handle HTML
+  content: string | JSX.Element; // Changed from text to content to handle HTML
   sender: string;
 };
 
@@ -112,36 +113,15 @@ export const ChatSideBar: React.FC<ChatSideBarProps> = ({ context }) => {
           throw new Error("Unfortunately, there's nothing to talk about");
         }
 
-        const formatSearchResults = (
-          results: { title: string; href: string; body: string }[],
-        ) => {
-          return results
-            .map(
-              (result) => `
-              <div class="card">
-                <a href="${result.href}" target="_blank" rel="noopener noreferrer" class="card-link">
-                <!--  <img src="${result.href}" alt="Thumbnail" class="card-thumbnail"/> -->
-                  <div class="card-content">
-                    <h3 class="card-title">${result.title}</h3>
-                    <p class="card-body">${result.body}</p>
-                  </div>
-                </a>
-              </div>
-            `,
-            )
-            .join("");
-        };
-
         const response = await getChatResponse(inputMessage, userID, context);
         console.log(response);
 
         if (response.trim().startsWith("<p>search_handover")) {
           const searchQuery = response.trim().slice(17);
           const results = await getSearchResponse(searchQuery);
-          const formattedResponse = formatSearchResults(results);
           setMessages((prev) => [
             ...prev,
-            { content: formattedResponse, sender: "bot" }, // Use content instead of text
+            { content: <CarouselCards results={results} />, sender: "bot" }, // Use content instead of text
           ]);
           return;
         }
@@ -204,11 +184,17 @@ export const ChatSideBar: React.FC<ChatSideBarProps> = ({ context }) => {
                     className={`max-w-[80%] rounded-lg p-3 ${
                       message.sender === "user"
                         ? "bg-blue-100 text-blue-900"
-                        : "bg-gray-100 text-gray-900"
+                        : "bg-gray-100 text-gray-900 "
                     }`}
-                    // Using dangerouslySetInnerHTML to render HTML content
-                    dangerouslySetInnerHTML={{ __html: message.content }}
-                  />
+                  >
+                    {React.isValidElement(message.content) ? (
+                      message.content
+                    ) : (
+                      <div
+                        dangerouslySetInnerHTML={{ __html: message.content }}
+                      />
+                    )}
+                  </div>
                 </div>
               ))}
 

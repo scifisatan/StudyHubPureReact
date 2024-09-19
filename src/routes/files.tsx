@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { getPDFSummary } from "@/api";
-import { ChatSideBar } from "@/components/chatsidebar";
+import { ChatSideBar } from "@/components/chatsidebar/chatsidebar";
 import { Dropzone } from "@/components/dropzone";
 import { Notes } from "@/components/notes";
 import { Button } from "@/components/ui/button";

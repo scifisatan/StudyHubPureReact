@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { getYoutubeSummary } from "@/api";
-import { ChatSideBar } from "@/components/chatsidebar";
+import { ChatSideBar } from "@/components/chatsidebar/chatsidebar";
 import { Notes } from "@/components/notes";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
