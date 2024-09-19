@@ -158,7 +158,7 @@ function Component() {
     if ((import.meta.env.VITE_CHATWOOT_ENABLED || "false") === "true") {
       useEffect(() => {
         const script = document.createElement("script");
-        script.src = "https://app.chatwoot.com/packs/js/sdk.js";
+        script.src = "https://chat.sthaarun.com.np/packs/js/sdk.js";
         script.defer = true;
         script.async = true;
         script.onload = () => {
@@ -170,8 +170,8 @@ function Component() {
           };
           //@ts-ignore
           window.chatwootSDK.run({
-            websiteToken: "xwfSJZhV2i9HyFQ28ie3jHCx",
-            baseUrl: "https://app.chatwoot.com",
+            websiteToken: "spW4kHDxsV6M9AMbEY4WzUF8",
+            baseUrl: "https://chat.sthaarun.com.np",
           });
         };
         document.body.appendChild(script);
