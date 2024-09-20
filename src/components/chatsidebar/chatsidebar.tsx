@@ -3,6 +3,7 @@ import { getChatResponse, getMemoryResponse, getForgetResponse } from "@/api";
 import { ChevronLeft, ChevronRight, Send } from "lucide-react";
 import "@/searchResults.css";
 import CarouselCards from "./search-results";
+import ImageCarousel from "./image-search-results";
 
 // import { MarkdownRenderer } from "@/components/markdown";
 
@@ -155,7 +156,11 @@ export const ChatSideBar: React.FC<ChatSideBarProps> = ({ context }) => {
         else{
             setMessages((prev) => [
                 ...prev,
-                { content: `${response.reply} This is an image search`, sender: "bot" }, // Use content instead of text
+                { content: response.reply, sender: "bot" }, // Use content instead of text
+              ]);
+              setMessages((prev) => [
+                ...prev,
+                { content: <ImageCarousel results={response.search_results} />, sender: "bot" }, // Use content instead of text
               ]);
               return;
         }
