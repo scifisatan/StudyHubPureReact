@@ -67,6 +67,7 @@ export const getSearchResponse = async (query: string) => {
   try {
     const response = await api.post("/search", {
       query,
+      mode: "web",
     });
     return response.data;
   } catch (error) {
