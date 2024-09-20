@@ -77,4 +77,32 @@ export const getSearchResponse = async (query: string) => {
   }
 };
 
+export const getMemoryResponse = async (memory: string, user_id:string) => {
+    try {
+      const response = await api.post("/remember", {
+        user_id,
+        memory,
+      });
+      return response.data.message;
+    } catch (error) {
+      console.error(error);
+      toast.error("Error fetching chat response");
+      throw error; // Re-throw the error if you want to handle it further up the call stack
+    }
+  };
+
+  export const getForgetResponse = async (user_id:string) => {
+    try {
+      const response = await api.post("/forget", {
+        user_id,
+        memory: "all",
+      });
+      return response.data.message;
+    } catch (error) {
+      console.error(error);
+      toast.error("Error fetching chat response");
+      throw error; // Re-throw the error if you want to handle it further up the call stack
+    }
+  };
+
 export default api;
