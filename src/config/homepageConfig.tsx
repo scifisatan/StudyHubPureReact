@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 
 export const HomePageConfig = {
-  title: "StudyHub",
+  title: "GuruCool",
   header: {
     icon: <BookOpen />,
     navigation: [
@@ -91,7 +91,7 @@ export const HomePageConfig = {
     },
   ],
   footer: {
-    text: "© 2024 StudyHub. All rights reserved",
+    text: "© 2024 GuruCool. All rights reserved",
     links: [
       {
         name: "Privacy Policy",

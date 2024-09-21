@@ -1,10 +1,10 @@
 {
-  "name": "StudyHub",
+  "name": "GuruCool",
   "private": true,
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --port 1237",
     "dev:playwright": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
