@@ -129,6 +129,12 @@ function MobileNavigation(props: { open: boolean; onOpenChange: () => void }) {
       >
         <SheetTitle className="sr-only">Navigation menu</SheetTitle>
         <nav className="mr-6 flex flex-col gap-4">
+        <MobileNavigationItem
+            to="/dashboard"
+            onClick={props.onOpenChange}
+            icon={Home}
+            label="Dashboard"
+          />
           <MobileNavigationItem
             to="/lectures"
             onClick={props.onOpenChange}
