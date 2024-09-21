@@ -10,19 +10,24 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { v4 as uuidv4 } from "uuid";
+import { login } from "@/lib/login";
 
 export function Login() {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const userID = uuidv4();
 
   return (
     <form
       onSubmit={(event) => {
         event.preventDefault();
-        localStorage.setItem("userID", userID);
-        navigate(searchParams.get("to") ?? "/lectures");
+        login(
+          event.currentTarget.email.value,
+          event.currentTarget.password.value,
+        );
+        if (localStorage.getItem("role") === "teacher") {
+          navigate("/teacher");
+        } else {
+          navigate("/lectures");
+        }
       }}
     >
       <div className="flex h-screen w-full items-center justify-center bg-gradient-to-r from-cyan-500 to-primary">

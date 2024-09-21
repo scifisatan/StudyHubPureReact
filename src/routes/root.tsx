@@ -188,17 +188,20 @@ function Component() {
   let currentRoute = location.pathname.split("/")[1];
 
   currentRoute = currentRoute.charAt(0).toUpperCase() + currentRoute.slice(1);
-
+  const baseStyle = `flex flex-col w-col ${currentRoute != "Teacher" || "Student" ? "sm:pl-[72px]" : ""}`;
   return (
     <>
-      <Navigation />
+      {currentRoute != "Teacher" || "Student" && (
+        <>
+          <Navigation />
 
-      <MobileNavigation
-        open={isSheetOpen}
-        onOpenChange={() => setIsSheetOpen(false)}
-      />
-
-      <div className="flex w-full flex-col sm:pl-[72px]">
+          <MobileNavigation
+            open={isSheetOpen}
+            onOpenChange={() => setIsSheetOpen(false)}
+          />
+        </>
+      )}
+      <div className={baseStyle}>
         <header className="sticky top-0 z-50 bg-transparent backdrop-blur">
           <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-4">
             <Button

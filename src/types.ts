@@ -21,3 +21,13 @@ export type FeatureCardProps = {
   title: string;
   description: string;
 };
+
+export type Resource = {
+  id?: number;
+  tag: string;
+  title: string;
+  date:string;
+  note?: string;
+  url?: string;
+  file?: File;
+};

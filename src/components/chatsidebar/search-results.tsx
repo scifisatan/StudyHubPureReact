@@ -26,7 +26,7 @@ function CardComponent({ data }: { data: SearchResult }) {
       rel="noopener noreferrer"
       className="block"
     >
-      <Card className="mx-auto flex w-full max-w-sm transform cursor-pointer flex-col border-none bg-gray-100 text-gray-900 transition-transform hover:scale-105 hover:shadow-lg hover:underline">
+      <Card className="mx-auto flex w-full max-w-sm transform cursor-pointer flex-col border-none bg-gray-100 text-gray-900 transition-transform hover:scale-105 hover:underline hover:shadow-lg">
         <CardHeader>
           <CardTitle>{data.title}</CardTitle>
         </CardHeader>

@@ -1,3 +1,4 @@
+import { Resource } from "@/types";
 import axios from "axios";
 import { toast } from "sonner";
 
@@ -63,32 +64,98 @@ export const getChatResponse = async (
   }
 };
 
-export const getMemoryResponse = async (memory: string, user_id:string) => {
-    try {
-      const response = await api.post("/remember", {
-        user_id,
-        memory,
-      });
-      return response.data.message;
-    } catch (error) {
-      console.error(error);
-      toast.error("Error fetching chat response");
-      throw error; // Re-throw the error if you want to handle it further up the call stack
-    }
-  };
 
-  export const getForgetResponse = async (user_id:string) => {
-    try {
-      const response = await api.post("/forget", {
-        user_id,
-        memory: "all",
-      });
-      return response.data.message;
-    } catch (error) {
-      console.error(error);
-      toast.error("Error fetching chat response");
-      throw error; // Re-throw the error if you want to handle it further up the call stack
-    }
-  };
+export const getMemoryResponse = async (memory: string, user_id: string) => {
+  try {
+    const response = await api.post("/remember", {
+      user_id,
+      memory,
+    });
+    return response.data.message;
+  } catch (error) {
+    console.error(error);
+    toast.error("Error fetching chat response");
+    throw error; // Re-throw the error if you want to handle it further up the call stack
+  }
+};
+export const getForgetResponse = async (user_id: string) => {
+  try {
+    const response = await api.post("/forget", {
+      user_id,
+      memory: "all",
+    });
+    return response.data.message;
+  } catch (error) {
+    console.error(error);
+    toast.error("Error fetching chat response");
+    throw error; // Re-throw the error if you want to handle it further up the call stack
+  }
+};
+
+export const getResource = async () => {
+  try {
+    const response = await api.get("/resources");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching resources:", error);
+    toast.error("Failed to fetch resources. Please try again.");
+    throw error;
+  }
+};
+
+export const addResourceToServer = async (resource: Resource) => {
+  try {
+    const response = await api.post("/resources", resource);
+    console.log(response);
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.error("Error adding resource:", error);
+    throw error;
+  }
+};
+
+export const deleteResource = async (id: number) => {
+  try {
+    await api.delete(`/resources/${id}`);
+  } catch (error) {
+    console.error("Error deleting resource:", error);
+    toast.error("Failed to delete resource. Please try again.");
+    throw error;
+  }
+};
+
+export const uploadFile = async (file: File) => {
+  const formData = new FormData();
+  formData.append("file", file);
+  try {
+    const response = await api.post("/file", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error uploading file:", error);
+    throw error;
+  }
+};
+
+export const uploadAudio = async (file: File) => {
+  const formData = new FormData();
+  formData.append("file", file);
+  try {
+    const response = await api.post("/audio", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error uploading file:", error);
+    throw error;
+  }
+};
 
 export default api;
