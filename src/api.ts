@@ -64,6 +64,7 @@ export const getChatResponse = async (
   }
 };
 
+
 export const getMemoryResponse = async (memory: string, user_id: string) => {
   try {
     const response = await api.post("/remember", {

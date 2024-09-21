@@ -1,5 +1,6 @@
 import React from "react";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+
 type ImageResult = {
   title: string;
   image: string;
@@ -9,9 +10,11 @@ type ImageResult = {
   width: number;
   source: string;
 };
+
 type ImageCarouselProps = {
   results?: ImageResult[];
 };
+
 const ImageCarousel: React.FC<ImageCarouselProps> = ({ results }) => {
   return (
     <div className="relative mx-auto w-full max-w-sm">
@@ -39,4 +42,5 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ results }) => {
     </div>
   );
 };
+
 export default ImageCarousel;

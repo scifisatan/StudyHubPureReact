@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight, Send } from "lucide-react";
 import "@/searchResults.css";
 import CarouselCards from "./search-results";
 import ImageCarousel from "./image-search-results";
+
 // import { MarkdownRenderer } from "@/components/markdown";
 
 type ChatSideBarProps = {
@@ -123,6 +124,7 @@ export const ChatSideBar: React.FC<ChatSideBarProps> = ({ context }) => {
             { content: response, sender: "bot" }, // Use content instead of text
           ]);
           return;
+
         }
 
         if (context === "Your notes will appear here") {
@@ -165,6 +167,7 @@ export const ChatSideBar: React.FC<ChatSideBarProps> = ({ context }) => {
           return;
         }
 
+
         // if (response.trim().startsWith("<p>search_handover")) {
         //   const searchQuery = response.trim().slice(17);
         //   const results = await getSearchResponse(searchQuery);
@@ -174,6 +177,7 @@ export const ChatSideBar: React.FC<ChatSideBarProps> = ({ context }) => {
         //   ]);
         //   return;
         // }
+
       } catch (error: any) {
         setMessages((prev) => [
           ...prev,
