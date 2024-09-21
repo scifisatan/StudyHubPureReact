@@ -1,3 +1,4 @@
+import { deleteResource } from "@/api";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -15,13 +16,21 @@ import { Resource } from "@/types";
 import { Trash } from "lucide-react";
 import { toast } from "sonner";
 
-const DeleteButton = ({ resource }: { resource: Resource  }) => {
-  const handleDeleteResource = (id: number) => {
-    toast.success("Resource is deleted successfully");
-    console.log(`resource ${id} is deleted`);
+const DeleteButton = ({ resource }: { resource: Resource }) => {
+  const handleDeleteResource = async (id: number) => {
+    try {
+      await deleteResource(id);
+      toast.success("Resource is deleted successfully");
+      console.log(`resource ${id} is deleted`);
+    } catch (error: any) {
+      console.error("Error deleting resource:", error);
+      toast.error("Failed to delete resource. Please try again.");
+    }
   };
 
-  const TriggerComponent = !(resource.tag === "audio") ? DropdownMenuItem : Button;
+  const TriggerComponent = !(resource.tag === "audio")
+    ? DropdownMenuItem
+    : Button;
 
   return (
     <AlertDialog>
@@ -41,7 +50,9 @@ const DeleteButton = ({ resource }: { resource: Resource  }) => {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={() => resource.id && handleDeleteResource(resource.id)}>
+          <AlertDialogAction
+            onClick={() => resource.id && handleDeleteResource(resource.id)}
+          >
             Delete
           </AlertDialogAction>
         </AlertDialogFooter>

@@ -32,7 +32,7 @@ export const getYoutubeSummary = async (url: string) => {
 export const getPDFSummary = async (file: File) => {
   const formData = new FormData();
   formData.append("file", file);
-  return handleApiCall("/file", formData, {
+  return handleApiCall("/file_student", formData, {
     "Content-Type": "multipart/form-data",
   });
 };
@@ -40,7 +40,7 @@ export const getPDFSummary = async (file: File) => {
 export const getLectureSummary = async (blob: Blob) => {
   const formData = new FormData();
   formData.append("file", blob);
-  return handleApiCall("/audio", formData, {
+  return handleApiCall("/audio_student", formData, {
     "Content-Type": "multipart/form-data",
   });
 };
@@ -117,7 +117,8 @@ export const addResourceToServer = async (resource: Resource) => {
 
 export const deleteResource = async (id: number) => {
   try {
-    await api.delete(`/resources/${id}`);
+    const response = await api.delete(`/resources/${id}`);
+    console.log(response)
   } catch (error) {
     console.error("Error deleting resource:", error);
     toast.error("Failed to delete resource. Please try again.");
