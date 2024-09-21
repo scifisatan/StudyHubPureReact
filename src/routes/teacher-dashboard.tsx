@@ -7,9 +7,7 @@ import { useResourceStore } from "@/stores/resourceStore";
 import { Resource } from "@/types";
 
 export function TeacherDashboard() {
-  const [currentAudio, setCurrentAudio] = useState<HTMLAudioElement | null>(
-    null,
-  );
+
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentLectureId, setCurrentLectureId] = useState<number | null>(null);
   const [progress, setProgress] = useState(0);
@@ -47,7 +45,6 @@ export function TeacherDashboard() {
 
       const audio = new Audio(audioUrl);
       audio.play();
-      setCurrentAudio(audio);
       setIsPlaying(true);
       setCurrentLectureId(id);
       audioRef.current = audio;
@@ -55,7 +52,6 @@ export function TeacherDashboard() {
       audio.onended = () => {
         setIsPlaying(false);
         setCurrentLectureId(null);
-        setCurrentAudio(null);
         setProgress(0);
       };
 

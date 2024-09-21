@@ -73,6 +73,7 @@ export default function StudentDashboard() {
             </CardHeader>
             <CardContent>
               <p className="mb-2 text-sm text-gray-500">Type: {resource.tag}</p>
+              {/* @ts-ignore */}
               <MarkdownRenderer>{`${resource.note.substring(0, 100)}...`}</MarkdownRenderer>
             </CardContent>
           </Card>
