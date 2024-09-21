@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
-import { getChatResponse, getSearchResponse } from "@/api";
+import { getChatResponse, getForgetResponse, getMemoryResponse } from "@/api";
 import { ChevronLeft, ChevronRight, Send } from "lucide-react";
 import "@/searchResults.css";
 import CarouselCards from "./search-results";
-
+import ImageCarousel from "./image-search-results";
 // import { MarkdownRenderer } from "@/components/markdown";
 
 type ChatSideBarProps = {
@@ -106,6 +106,25 @@ export const ChatSideBar: React.FC<ChatSideBarProps> = ({ context }) => {
             "There has been an error regarding user. Please login again to fix this issue",
           );
         }
+
+        if (inputMessage.trim().toLowerCase().startsWith("/remember")) {
+          const memory = inputMessage.trim().slice(9);
+          const response = await getMemoryResponse(memory, userID);
+          setMessages((prev) => [
+            ...prev,
+            { content: response, sender: "bot" }, // Use content instead of text
+          ]);
+          return;
+        }
+        if (inputMessage.trim().toLowerCase().startsWith("/forget")) {
+          const response = await getForgetResponse(userID);
+          setMessages((prev) => [
+            ...prev,
+            { content: response, sender: "bot" }, // Use content instead of text
+          ]);
+          return;
+        }
+
         if (context === "Your notes will appear here") {
           throw new Error("First provide the resources to chat with the bot");
         }
@@ -115,21 +134,46 @@ export const ChatSideBar: React.FC<ChatSideBarProps> = ({ context }) => {
 
         const response = await getChatResponse(inputMessage, userID, context);
         console.log(response);
-
-        if (response.trim().startsWith("<p>search_handover")) {
-          const searchQuery = response.trim().slice(17);
-          const results = await getSearchResponse(searchQuery);
+        if (response.mode == "text") {
           setMessages((prev) => [
             ...prev,
-            { content: <CarouselCards results={results} />, sender: "bot" }, // Use content instead of text
+            { content: response.reply, sender: "bot" }, // Use content instead of text
+          ]);
+          return;
+        }
+        if (response.mode == "web") {
+          setMessages((prev) => [
+            ...prev,
+            {
+              content: <CarouselCards results={response.search_results} />,
+              sender: "bot",
+            }, // Use content instead of text
+          ]);
+          return;
+        } else {
+          setMessages((prev) => [
+            ...prev,
+            { content: response.reply, sender: "bot" }, // Use content instead of text
+          ]);
+          setMessages((prev) => [
+            ...prev,
+            {
+              content: <ImageCarousel results={response.search_results} />,
+              sender: "bot",
+            },
           ]);
           return;
         }
 
-        setMessages((prev) => [
-          ...prev,
-          { content: response, sender: "bot" }, // Use content instead of text
-        ]);
+        // if (response.trim().startsWith("<p>search_handover")) {
+        //   const searchQuery = response.trim().slice(17);
+        //   const results = await getSearchResponse(searchQuery);
+        //   setMessages((prev) => [
+        //     ...prev,
+        //     { content: <CarouselCards results={results} />, sender: "bot" }, // Use content instead of text
+        //   ]);
+        //   return;
+        // }
       } catch (error: any) {
         setMessages((prev) => [
           ...prev,
@@ -184,7 +228,7 @@ export const ChatSideBar: React.FC<ChatSideBarProps> = ({ context }) => {
                     className={`max-w-[80%] rounded-lg p-3 ${
                       message.sender === "user"
                         ? "bg-blue-100 text-blue-900"
-                        : "bg-gray-100 text-gray-900 "
+                        : "bg-gray-100 text-gray-900"
                     }`}
                   >
                     {React.isValidElement(message.content) ? (

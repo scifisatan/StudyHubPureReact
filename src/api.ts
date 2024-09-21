@@ -56,7 +56,7 @@ export const getChatResponse = async (
       sender: senderID,
       context,
     });
-    return response.data[0].text;
+    return response.data[0];
   } catch (error) {
     console.error(error);
     toast.error("Error fetching chat response");
@@ -64,12 +64,26 @@ export const getChatResponse = async (
   }
 };
 
-export const getSearchResponse = async (query: string) => {
+export const getMemoryResponse = async (memory: string, user_id: string) => {
   try {
-    const response = await api.post("/search", {
-      query,
+    const response = await api.post("/remember", {
+      user_id,
+      memory,
     });
-    return response.data;
+    return response.data.message;
+  } catch (error) {
+    console.error(error);
+    toast.error("Error fetching chat response");
+    throw error; // Re-throw the error if you want to handle it further up the call stack
+  }
+};
+export const getForgetResponse = async (user_id: string) => {
+  try {
+    const response = await api.post("/forget", {
+      user_id,
+      memory: "all",
+    });
+    return response.data.message;
   } catch (error) {
     console.error(error);
     toast.error("Error fetching chat response");
@@ -91,8 +105,8 @@ export const getResource = async () => {
 export const addResourceToServer = async (resource: Resource) => {
   try {
     const response = await api.post("/resources", resource);
-    console.log(response)
-    console.log(response)
+    console.log(response);
+    console.log(response);
     return response.data;
   } catch (error) {
     console.error("Error adding resource:", error);
@@ -110,7 +124,6 @@ export const deleteResource = async (id: number) => {
   }
 };
 
-
 export const uploadFile = async (file: File) => {
   const formData = new FormData();
   formData.append("file", file);
@@ -120,14 +133,13 @@ export const uploadFile = async (file: File) => {
         "Content-Type": "multipart/form-data",
       },
     });
-    console.log(response.data)
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("Error uploading file:", error);
     throw error;
   }
-}
-
+};
 
 export const uploadAudio = async (file: File) => {
   const formData = new FormData();
@@ -143,6 +155,6 @@ export const uploadAudio = async (file: File) => {
     console.error("Error uploading file:", error);
     throw error;
   }
-}
+};
 
 export default api;
