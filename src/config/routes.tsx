@@ -5,6 +5,7 @@ import { Lectures } from "@/routes/lectures";
 import { Login } from "@/routes/login";
 import { NotFound } from "@/routes/not-found";
 import { Root } from "@/routes/root";
+import { TeacherDashboard } from "@/routes/teacher-dashboard";
 import { Youtube } from "@/routes/youtube";
 
 export const router = createBrowserRouter([
@@ -46,7 +47,10 @@ export const router = createBrowserRouter([
       },
     ],
   },
-
+  {
+    path: "/teacher",
+    element: <TeacherDashboard />,
+  },
   {
     path: "*",
     element: <NotFound />,
