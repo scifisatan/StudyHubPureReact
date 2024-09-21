@@ -26,7 +26,7 @@ export function Login() {
         if (localStorage.getItem("role") === "teacher") {
           navigate("/teacher");
         } else if (localStorage.getItem("role") === "student") {
-          navigate("/dashboard`");
+          navigate("/dashboard");
         }
       }}
     >
