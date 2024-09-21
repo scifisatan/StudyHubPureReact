@@ -31,7 +31,7 @@ const ResourceCard: React.FC<{ resource: Resource }> = ({ resource }) => {
           </div>
         );
       case "youtube":
-        //@ts-ignore
+        // @ts-ignore
         const videoId = extractVideoId(resource.url);
         return videoId ? (
           <div className="aspect-video">

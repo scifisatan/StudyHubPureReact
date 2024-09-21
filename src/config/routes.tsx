@@ -61,8 +61,8 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: "/student",
-    element: <Topbar />,
+    path: "/dashboard",
+    element: <Root />,
     children: [
       {
         index: true,

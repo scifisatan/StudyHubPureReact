@@ -7,15 +7,8 @@ import {
   useLocation,
   useMatch,
 } from "react-router-dom";
+import BreadcrumbRoute from "@/components/breadcrumb-route";
 import { ModeToggle } from "@/components/mode-toggle";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import {
@@ -27,7 +20,15 @@ import {
 import { UserAvatar } from "@/components/user-avatar";
 import { cn } from "@/lib/utils";
 import { PrivateRoute } from "@/routes/private";
-import { BookOpen, Files, FileText, Menu, Mic, Youtube } from "lucide-react";
+import {
+  BookOpen,
+  Files,
+  FileText,
+  Home,
+  Menu,
+  Mic,
+  Youtube,
+} from "lucide-react";
 
 function NavigationItem({
   to,
@@ -73,6 +74,7 @@ function Navigation() {
 
       <TooltipProvider>
         <nav className="flex flex-col gap-4 p-4">
+          <NavigationItem to="/dashboard" icon={Home} label="Dashboard" />
           <NavigationItem to="/lectures" icon={Mic} label="Lectures" />
           <NavigationItem to="/youtube" icon={Youtube} label="Youtube" />
           <NavigationItem to="/files" icon={FileText} label="Files" />
@@ -191,16 +193,15 @@ function Component() {
   const baseStyle = `flex flex-col w-col ${currentRoute != "Teacher" || "Student" ? "sm:pl-[72px]" : ""}`;
   return (
     <>
-      {currentRoute != "Teacher" || "Student" && (
-        <>
-          <Navigation />
+      <>
+        <Navigation />
 
-          <MobileNavigation
-            open={isSheetOpen}
-            onOpenChange={() => setIsSheetOpen(false)}
-          />
-        </>
-      )}
+        <MobileNavigation
+          open={isSheetOpen}
+          onOpenChange={() => setIsSheetOpen(false)}
+        />
+      </>
+
       <div className={baseStyle}>
         <header className="sticky top-0 z-50 bg-transparent backdrop-blur">
           <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-4">
@@ -213,6 +214,7 @@ function Component() {
               <Menu />
             </Button>
             <h1 className="grow text-2xl font-medium">{currentRoute}</h1>
+
             <ModeToggle />
             <UserAvatar
               user={{
@@ -227,17 +229,7 @@ function Component() {
         </header>
 
         <main className="mx-auto w-full max-w-7xl p-4">
-          <Breadcrumb className="mb-6">
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink>Home</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>{currentRoute}</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
+          <BreadcrumbRoute />
 
           <Outlet />
         </main>

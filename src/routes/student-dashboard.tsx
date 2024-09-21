@@ -33,7 +33,7 @@ export default function StudentDashboard() {
   }, [resources, searchTerm, activeFilter]);
 
   const handleResourceClick = (resourceId: number) => {
-    navigate(`/student/${resourceId}`);
+    navigate(`/dashboard/${resourceId}`);
   };
 
   return (

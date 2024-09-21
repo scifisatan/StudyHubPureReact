@@ -25,8 +25,8 @@ export function Login() {
         );
         if (localStorage.getItem("role") === "teacher") {
           navigate("/teacher");
-        } else {
-          navigate("/lectures");
+        } else if (localStorage.getItem("role") === "student") {
+          navigate("/student");
         }
       }}
     >

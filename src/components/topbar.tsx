@@ -4,7 +4,7 @@ import { ModeToggle } from "@/components/mode-toggle";
 import { UserAvatar } from "@/components/user-avatar";
 import { PrivateRoute } from "@/routes/private";
 
-function    Component() {
+function Component() {
   {
     if ((import.meta.env.VITE_CHATWOOT_ENABLED || "false") === "true") {
       useEffect(() => {
@@ -37,7 +37,7 @@ function    Component() {
 
   return (
     <>
-      <div className="w-col flex flex-col min-h-screen">
+      <div className="w-col flex min-h-screen flex-col">
         <header className="sticky top-0 z-50 bg-transparent backdrop-blur">
           <div className="mx-auto flex max-w-7xl items-center justify-end gap-4 px-4 py-4">
             <ModeToggle />
@@ -53,7 +53,7 @@ function    Component() {
           </div>
         </header>
 
-        <main className="mx-auto max-h-full  w-full max-w-7xl p-4">
+        <main className="mx-auto max-h-full w-full max-w-7xl p-4">
           <Outlet />
         </main>
       </div>
