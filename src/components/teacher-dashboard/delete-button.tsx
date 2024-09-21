@@ -1,4 +1,3 @@
-import { deleteResource } from "@/api";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -11,15 +10,17 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { Resource } from "@/types";
 import { Trash } from "lucide-react";
 import { toast } from "sonner";
+import { useResourceStore } from "@/stores/resourceStore";
 
 const DeleteButton = ({ resource }: { resource: Resource }) => {
+  const removeResource = useResourceStore((state) => state.removeResource);
+
   const handleDeleteResource = async (id: number) => {
     try {
-      await deleteResource(id);
+      removeResource(id);
       toast.success("Resource is deleted successfully");
       console.log(`resource ${id} is deleted`);
     } catch (error: any) {
@@ -28,17 +29,16 @@ const DeleteButton = ({ resource }: { resource: Resource }) => {
     }
   };
 
-  const TriggerComponent = !(resource.tag === "audio")
-    ? DropdownMenuItem
-    : Button;
+
+ 
 
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <TriggerComponent variant="outline">
+        <Button variant="outline">
           <Trash className="mr-2 h-4 w-4" />
           Delete
-        </TriggerComponent>
+        </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

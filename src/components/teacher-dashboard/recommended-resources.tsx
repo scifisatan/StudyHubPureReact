@@ -4,13 +4,17 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Resource } from "@/types";
+import DeleteButton from "./delete-button";
+import { Separator } from "@/components/ui/separator";
 
 const RecommendedResourcesCard = ({ resources }: { resources: Resource[] }) => {
   const [resourceType, setResourceType] = useState("all");
 
   const filteredResources =
     resourceType === "all"
-      ? resources.filter((resource) => resource.tag === "youtube" || resource.tag === "pdf")
+      ? resources.filter(
+          (resource) => resource.tag === "youtube" || resource.tag === "pdf",
+        )
       : resources.filter((resource) => resource.tag === resourceType);
 
   return (
@@ -28,17 +32,22 @@ const RecommendedResourcesCard = ({ resources }: { resources: Resource[] }) => {
           <TabsContent value="all">
             <ScrollArea>
               {filteredResources.map((resource) => (
-                <div key={resource.id}>
-                  <a
-                    href={resource.url}
-                    className="text-blue-600 hover:underline"
-                  >
-                    {resource.title}
-                  </a>
-                  <span className="ml-2 text-xs text-muted-foreground">
-                    ({resource.tag})
-                  </span>
-                  <MoreOptions resource={resource} />
+                <div>
+                  <div className="flex justify-between" key={resource.id}>
+                    <div>
+                      <a
+                        href={resource.url}
+                        className="text-xl text-blue-600 hover:underline"
+                      >
+                        {resource.title}
+                      </a>
+                      <span className="ml-2 text-xs text-muted-foreground">
+                        ({resource.tag})
+                      </span>
+                    </div>
+                    <DeleteButton resource={resource} />
+                  </div>
+                   <Separator className="my-2" />
                 </div>
               ))}
               <ScrollBar />
